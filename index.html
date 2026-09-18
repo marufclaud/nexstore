@@ -206,21 +206,23 @@
             VIP FASHION PASS
           </span>
           <h3 class="text-2xl sm:text-3xl font-black mt-2.5 md:mt-3.5 leading-snug tracking-tight">
-            Get ৳350 OFF <br/>On New Wardrobe
+            Get ৳250 OFF <br/>On New Wardrobe
           </h3>
           <p class="text-xs text-rose-100 mt-1.5 leading-relaxed font-medium">
             Upgrade your festive & casual style. Instant discount applied at checkout.
           </p>
         </div>
 
-        <div class="relative z-10 bg-white/95 backdrop-blur-md rounded-xl md:rounded-2xl p-3 md:p-4 text-slate-800 mt-4 md:mt-6 shadow flex items-center gap-3">
-          <div class="w-12 md:w-14 h-12 md:h-14 bg-slate-950 text-white rounded-lg md:rounded-xl flex flex-col items-center justify-center font-mono text-[9px] md:text-[10px] font-bold leading-tight shrink-0">
-            <span class="text-[7px] md:text-[8px] text-slate-400 uppercase tracking-widest font-sans">PROMO</span>
-            <span class="text-brand-pink font-black text-xs">STYLE350</span>
+        <!-- ভাউচার ইমেজ ও ক্লিকযোগ্য কার্ড (ক্লিক করলে ভাউচার পপআপ ওপেন হবে) -->
+        <div onclick="openVoucherModal()" class="relative z-10 mt-4 md:mt-6 cursor-pointer group transition transform hover:scale-[1.02] active:scale-[0.98]">
+          <div class="rounded-xl md:rounded-2xl overflow-hidden shadow-lg border border-white/40 bg-white">
+            <img src="https://i.ibb.co.com/TBbHV1cR/Screenshot-2026-09-18-072526.png" alt="Screenshot 2026 09 18 072526" class="w-full h-auto object-cover block" />
           </div>
-          <div>
-            <p class="text-xs font-bold text-slate-900">Wardrobe Voucher</p>
-            <p class="text-[10px] md:text-[11px] text-slate-500">Save ৳350 on apparel orders above ৳2,000</p>
+          <div class="mt-2 text-center">
+            <span class="inline-flex items-center gap-1.5 bg-white/20 hover:bg-white/30 text-white text-[10px] font-bold px-3 py-1 rounded-full backdrop-blur-sm transition shadow">
+              <svg class="w-3.5 h-3.5 text-amber-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm2 5a1 1 0 100 2h6a1 1 0 100-2H7zm0 4a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path></svg>
+              <span>ক্লিক করে ভাউচার কোড নিন (৳250 OFF)</span>
+            </span>
           </div>
         </div>
       </div>
@@ -297,6 +299,39 @@
     <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4"></div>
   </main>
 
+    <!-- ভাউচার কোড পপআপ মডাল (৳250 OFF) -->
+  <div id="voucherModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl relative text-center border border-pink-100">
+      <button onclick="closeVoucherModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1.5 rounded-full hover:bg-slate-100 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+
+      <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-pink to-rose-500 text-white mx-auto flex items-center justify-center mb-3 shadow-lg shadow-pink-500/25">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>
+      </div>
+
+      <span class="text-[10px] uppercase font-black tracking-widest text-brand-pink bg-pink-50 px-3 py-1 rounded-full inline-block">Exclusive Voucher</span>
+      <h3 class="text-2xl font-black text-slate-900 mt-2 font-serif">Get ৳250 OFF</h3>
+      <p class="text-xs text-slate-500 mt-1 leading-relaxed">NexFashion-এ যেকোনো ফ্যাশন পোশাকে পাবেন সরাসরি ৳২৫০ ডিসকাউন্ট (ন্যূনতম অর্ডার ৳১,৫০০)।</p>
+
+      <div class="mt-4 p-3.5 bg-slate-950 rounded-2xl flex items-center justify-between border border-slate-800">
+        <div class="text-left">
+          <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">PROMO CODE</span>
+          <span id="voucherCodeDisplay" class="text-brand-pink font-mono font-black text-lg tracking-wider">STYLE250</span>
+        </div>
+        <button onclick="copyVoucherCode()" id="copyVoucherBtn" class="bg-brand-pink hover:bg-brand-hoverPink text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          <span id="copyBtnText">Copy</span>
+        </button>
+      </div>
+
+      <button onclick="applyVoucherDirectly('STYLE250')" class="w-full mt-4 bg-slate-900 hover:bg-black text-white text-xs font-bold py-3 rounded-xl transition shadow-md flex items-center justify-center gap-1.5">
+        <span>Apply Voucher Directly</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+      </button>
+    </div>
+  </div>
+
   <!-- ৬. সাইজ ও কালার সিলেকশন পপআপ -->
   <div id="selectionModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-3xl sm:rounded-2xl max-w-md w-full p-5 shadow-2xl">
@@ -350,7 +385,7 @@
       
       <div class="border-t pt-3 space-y-2.5">
         <div class="flex gap-2">
-          <input id="voucherInput" type="text" placeholder="Promo (STYLE350)" class="flex-1 border rounded-lg px-2.5 py-1.5 text-xs uppercase font-mono focus:outline-none focus:border-brand-pink" />
+          <input id="voucherInput" type="text" placeholder="Promo (STYLE250)" class="flex-1 border rounded-lg px-2.5 py-1.5 text-xs uppercase font-mono focus:outline-none focus:border-brand-pink" />
           <button onclick="applyVoucher()" class="bg-slate-900 hover:bg-black text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">Apply</button>
         </div>
         <div id="voucherMsg" class="text-[10px] font-semibold hidden"></div>
@@ -746,93 +781,24 @@
     }
 
     const ADMIN_EMAIL = "marufclaud@gmail.com";
-
-    // ফলব্যাক পোশাক ক্যাটালগ (যাতে কোনো অবস্থাতেই সাইট লোডিং-এ আটকে না থাকে)
-    const fallbackProducts = [
-      {
-        id: "p_sample_1",
-        title: "Bespoke Royal Charcoal Wool Semi-Formal Blazer",
-        category: "Men Collection",
-        price: 6800,
-        originalPrice: 8500,
-        sizes: "M, L, XL, XXL",
-        colors: "Charcoal Black, Navy Blue, Ash Gray",
-        image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&q=80"
-      },
-      {
-        id: "p_sample_2",
-        title: "Handcrafted Crimson Mulberry Silk Festive Saree",
-        category: "Women Collection",
-        price: 12500,
-        originalPrice: 14800,
-        sizes: "Free Size",
-        colors: "Crimson Red, Royal Magenta, Emerald Green",
-        image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&q=80"
-      },
-      {
-        id: "p_sample_3",
-        title: "Hand-Stitched Genuine Calfskin Leather Chelsea Boots",
-        category: "Footwear",
-        price: 7200,
-        originalPrice: 8900,
-        sizes: "40, 41, 42, 43, 44",
-        colors: "Tan Brown, Jet Black",
-        image: "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=600&q=80"
-      },
-      {
-        id: "p_sample_4",
-        title: "Tailored Egyptian Cotton White Formal Dress Shirt",
-        category: "Men Collection",
-        price: 2450,
-        originalPrice: 3100,
-        sizes: "M, L, XL, XXL",
-        colors: "Pure White, Sky Blue, Soft Pink",
-        image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&q=80"
-      },
-      {
-        id: "p_sample_5",
-        title: "Minimalist Italian Vegetable Tanned Leather Tote Bag",
-        category: "Bags & Leather",
-        price: 5200,
-        originalPrice: 6500,
-        sizes: "Standard",
-        colors: "Vintage Tan, Classic Black",
-        image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=80"
-      },
-      {
-        id: "p_sample_6",
-        title: "Swiss Automatic Chronograph Rose Gold Luxury Timepiece",
-        category: "Watches & Accessories",
-        price: 16500,
-        originalPrice: 19500,
-        sizes: "42mm Dial",
-        colors: "Rose Gold, Silver Steel",
-        image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600&q=80"
-      },
-      {
-        id: "p_sample_7",
-        title: "Vintage Aviator Sunglasses with Gold Tone Rim",
-        category: "Watches & Accessories",
-        price: 2800,
-        originalPrice: 3500,
-        sizes: "Standard",
-        colors: "Gold Green, Black Polarized",
-        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&q=80"
-      },
-      {
-        id: "p_sample_8",
-        title: "Hand-Embroidered Pastel Chiffon Designer Kurti",
-        category: "Women Collection",
-        price: 3400,
-        originalPrice: 4200,
-        sizes: "S, M, L, XL",
-        colors: "Peach Pink, Mint Green, Lilac",
-        image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&q=80"
-      }
-    ];
+    const PRODUCTS_CACHE_KEY = "nexfashion_products_v2";
 
     let currentUser = null;
-    let products = [...fallbackProducts];
+    let products = [];
+    
+    // ১. লোকাল স্টোরেজ থেকে ইউজারের আসল প্রোডাক্ট সাথে সাথে লোড (রিলোড দিলে কোনো ডামি প্রডাক্ট ফ্ল্যাশ করবে না)
+    try {
+      const cached = localStorage.getItem(PRODUCTS_CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          products = parsed;
+        }
+      }
+    } catch (e) {
+      console.warn("Cache read notice:", e);
+    }
+
     let cart = [];
     let currentCategory = 'All';
     let currentFinalImage = '';
@@ -855,7 +821,51 @@
     }
     window.safeCreateIcons = safeCreateIcons;
 
-    // পণ্য তালিকা রেন্ডার ফাংশন (হয়েস্টিং নিশ্চিত)
+    // ভাউচার কোড মডাল হ্যান্ডলারস
+    function openVoucherModal() {
+      const m = document.getElementById("voucherModal");
+      if (m) m.classList.remove("hidden");
+    }
+    window.openVoucherModal = openVoucherModal;
+
+    function closeVoucherModal() {
+      const m = document.getElementById("voucherModal");
+      if (m) m.classList.add("hidden");
+    }
+    window.closeVoucherModal = closeVoucherModal;
+
+    function copyVoucherCode() {
+      const code = "STYLE250";
+      const btnText = document.getElementById("copyBtnText");
+      if (typeof navigator !== "undefined" && navigator.clipboard) {
+        navigator.clipboard.writeText(code).then(() => {
+          if (btnText) {
+            btnText.innerText = "Copied!";
+            setTimeout(() => { btnText.innerText = "Copy"; }, 2000);
+          }
+        }).catch(() => {
+          fallbackCopy(code);
+        });
+      } else {
+        fallbackCopy(code);
+      }
+    }
+    window.copyVoucherCode = copyVoucherCode;
+
+    function fallbackCopy(code) {
+      prompt("Promo Code কপি করুন:", code);
+    }
+
+    function applyVoucherDirectly(code) {
+      closeVoucherModal();
+      const vInput = document.getElementById("voucherInput");
+      if (vInput) vInput.value = code;
+      applyVoucher();
+      toggleCart(true);
+    }
+    window.applyVoucherDirectly = applyVoucherDirectly;
+
+    // পণ্য তালিকা রেন্ডার ফাংশন
     function renderProducts(items) {
       const grid = document.getElementById("productGrid");
       if (!grid) return;
@@ -864,7 +874,7 @@
           <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
             <svg class="w-10 h-10 text-slate-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
             <h4 class="font-bold text-xs sm:text-sm text-slate-700">No outfits available in this category</h4>
-            <p class="text-[10px] sm:text-xs text-slate-400 mt-1">Please check another category.</p>
+            <p class="text-[10px] sm:text-xs text-slate-400 mt-1">Please check another category or refresh.</p>
           </div>
         `;
         return;
@@ -885,7 +895,10 @@
           
           <div class="p-2.5 sm:p-4 flex flex-col flex-1 justify-between">
             <div>
-              <span class="text-[9px] sm:text-[10px] uppercase font-bold text-brand-pink tracking-wider block">${p.category || 'Fashion'}</span>
+              <div class="flex items-center justify-between">
+                <span class="text-[9px] sm:text-[10px] uppercase font-bold text-brand-pink tracking-wider block">${p.category || 'Fashion'}</span>
+                <span class="text-[10px] font-bold text-amber-500 flex items-center gap-0.5">★ 4.9</span>
+              </div>
               <h3 class="font-bold text-xs sm:text-sm text-slate-900 mt-0.5 line-clamp-2 leading-tight">${p.title}</h3>
               
               <div class="flex items-baseline gap-1.5 mt-1.5">
@@ -1035,24 +1048,31 @@
     }
     window.changeCartQty = changeCartQty;
 
+    // ভাউচার অ্যাপ্লাই ফাংশন (STYLE250 তে ২৫০৳ ছাড়)
     function applyVoucher() {
-      const code = (document.getElementById("voucherInput").value || "").trim().toUpperCase();
+      const code = (document.getElementById("voucherInput")?.value || "").trim().toUpperCase();
       const msg = document.getElementById("voucherMsg");
       const subtotal = cart.reduce((sum, i) => sum + (Number(i.price) * (i.qty || 1)), 0);
 
-      msg.classList.remove("hidden");
-      if (code === "STYLE350") {
-        if (subtotal >= 2000) {
-          appliedDiscount = 350;
-          msg.className = "text-[10px] font-semibold text-emerald-600 block";
-          msg.innerText = "✓ VIP Voucher applied! ৳350 Discount activated.";
+      if (msg) msg.classList.remove("hidden");
+      if (code === "STYLE250" || code === "STYLE350") {
+        if (subtotal >= 1500) {
+          appliedDiscount = 250;
+          if (msg) {
+            msg.className = "text-[10px] font-semibold text-emerald-600 block";
+            msg.innerText = "✓ VIP Voucher applied! ৳250 Discount activated.";
+          }
         } else {
-          msg.className = "text-[10px] font-semibold text-red-500 block";
-          msg.innerText = "Minimum order ৳2,000 required for STYLE350.";
+          if (msg) {
+            msg.className = "text-[10px] font-semibold text-red-500 block";
+            msg.innerText = "Minimum order ৳1,500 required for STYLE250.";
+          }
         }
       } else {
-        msg.className = "text-[10px] font-semibold text-red-500 block";
-        msg.innerText = "Invalid voucher code.";
+        if (msg) {
+          msg.className = "text-[10px] font-semibold text-red-500 block";
+          msg.innerText = "Invalid voucher code. Try STYLE250.";
+        }
       }
       updateCartUI();
     }
@@ -1098,7 +1118,7 @@
       }
 
       const subtotal = cart.reduce((sum, i) => sum + (Number(i.price) * (i.qty || 1)), 0);
-      if (subtotal < 2000) appliedDiscount = 0;
+      if (subtotal < 1500) appliedDiscount = 0;
 
       const finalTotal = Math.max(0, subtotal - appliedDiscount);
 
@@ -1485,30 +1505,6 @@
     }
     window.adminAddProduct = adminAddProduct;
 
-    async function seedDemoProducts() {
-      if (!confirm("Are you sure you want to add 8 premium fashion items to your database?")) return;
-      const btn = document.getElementById("seedBtn");
-      btn.innerText = "Loading...";
-      btn.disabled = true;
-
-      try {
-        if (db) {
-          for (const item of fallbackProducts) {
-            const { id, ...data } = item;
-            await addDoc(collection(db, "products"), { ...data, createdAt: serverTimestamp() });
-          }
-        }
-        alert("All 8 luxury fashion items loaded into your database!");
-        toggleAdminPanel();
-      } catch (err) {
-        alert("Seed error: " + err.message);
-      } finally {
-        btn.innerText = "Seed 8 Outfits";
-        btn.disabled = false;
-      }
-    }
-    window.seedDemoProducts = seedDemoProducts;
-
     function renderAdminManageProducts() {
       const container = document.getElementById("manageProductList");
       if (!container) return;
@@ -1590,23 +1586,29 @@
     }
     window.updateOrderStatus = updateOrderStatus;
 
-    // প্রাথমিক রেন্ডার ও লোডিং স্টেট নিষ্ক্রিয়করণ
     function hideLoading() {
       const loader = document.getElementById("loadingIndicator");
       if (loader) loader.classList.add("hidden");
     }
 
     function initApp() {
-      // ১. তাৎক্ষণিক প্রোডাক্ট ডিসপ্লে (ফলব্যাক ডেটা সহ যাতে লোডিং-এ আটকে না থাকে)
-      renderProducts(products);
-      hideLoading();
-
-      const totalBadge = document.getElementById("productTotalCount");
-      if (totalBadge) totalBadge.innerText = `${products.length} Available`;
+      // ক্যাশ থেকে লোড করা থাকলে সাথে সাথে ইউজারদের আসল প্রোডাক্ট রেন্ডার হবে
+      if (products.length > 0) {
+        renderProducts(products);
+        hideLoading();
+        const totalBadge = document.getElementById("productTotalCount");
+        if (totalBadge) totalBadge.innerText = `${products.length} Available`;
+      } else {
+        // ক্যাশ না থাকলে লোডিং স্পিনার থাকবে, কোনো ডামি প্রোডাক্ট শো হবে না
+        const loader = document.getElementById("loadingIndicator");
+        if (loader) loader.classList.remove("hidden");
+        const totalBadge = document.getElementById("productTotalCount");
+        if (totalBadge) totalBadge.innerText = `Loading Outfits...`;
+      }
 
       updateCartUI();
 
-      // ২. অথেনটিকেশন লিসেনার
+      // অথেনটিকেশন লিসেনার
       if (auth) {
         onAuthStateChanged(auth, (user) => {
           currentUser = user;
@@ -1641,7 +1643,7 @@
         });
       }
 
-      // ৩. ফায়ারস্টোর রিয়েলটাইম সিঙ্ক (অটো-ফলব্যাক ও এরর ক্যাচিং সহ)
+      // ফায়ারস্টোর রিয়েলটাইম সিঙ্ক (আসল ডেটাবেজ থেকে ডেটা নিয়ে লোকাল ক্যাশ আপডেট করবে)
       if (db) {
         try {
           const productsCol = collection(db, "products");
@@ -1652,28 +1654,29 @@
               snapshot.forEach((docSnap) => {
                 products.push({ id: docSnap.id, ...docSnap.data() });
               });
+              // লোকাল স্টোরেজ আপডেট যাতে পরবর্তীতে ১ মিলি সেকেন্ডেও লোডিং বা ডামি না লাগে
+              try {
+                localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(products));
+              } catch (e) {}
             } else {
-              products = [...fallbackProducts];
+              products = [];
             }
             const totalCountEl = document.getElementById("productTotalCount");
             if (totalCountEl) totalCountEl.innerText = `${products.length} Available`;
             applyFilters();
             renderAdminManageProducts();
           }, (error) => {
-            console.warn("Firestore products error, keeping default catalog:", error);
+            console.warn("Firestore products sync notice:", error);
             hideLoading();
-            products = [...fallbackProducts];
             applyFilters();
           });
         } catch (e) {
+          console.warn("Firestore listener error:", e);
           hideLoading();
-          products = [...fallbackProducts];
           applyFilters();
         }
       }
 
-      // ৪. অলওয়েজ সেফটি টাইমআউট: যেকোনো পরিস্থিতিতে লোডার বন্ধ নিশ্চিতকরণ
-      setTimeout(hideLoading, 500);
       safeCreateIcons();
     }
 
