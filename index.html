@@ -3,36 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NexFashion — Haute Couture & Luxury Style</title>
+  <title>NexStore Fashion: Premium Clothing & Lifestyle</title>
   
-  <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
+  <style>
+    /* স্ক্রোলবার লুকানোর জন্য */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            serif: ['"Playfair Display"', 'serif'],
-            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif']
           },
           colors: {
-            luxury: {
-              wine: '#7A1526',
-              wineDark: '#4A0E17',
-              wineLight: '#8A182B',
-              gold: '#C5A880',
-              bg: '#F9F8F6',
-              dark: '#111111',
-              card: '#FFFFFF',
-              border: '#EAEAEA'
+            brand: {
+              pink: '#e6005c',
+              hoverPink: '#cc0052',
+              dark: '#0f172a',
+              gold: '#d97706',
+              lightpink: '#fff0f5'
             }
           }
         }
@@ -40,16 +43,16 @@
     }
   </script>
 </head>
-<body class="bg-luxury-bg text-[#1A1A1A] font-sans antialiased min-h-screen flex flex-col justify-between tracking-wide">
+<body class="bg-[#f8f9fa] text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between pb-16 md:pb-0">
 
-  <!-- ১. টপ বার (Sleek Dark Bar) -->
-  <div class="bg-luxury-dark text-slate-300 text-[11px] py-2 px-4 border-b border-white/10">
+  <!-- ১. টপ ইউটিলিটি বার (শুধু ডেক্সটপে দৃশ্যমান) -->
+  <div class="bg-slate-950 text-slate-300 text-xs py-1.5 px-4 hidden md:block border-b border-slate-800">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-3">
-        <span class="text-luxury-gold">✦</span>
-        <span>Welcome to NexFashion — Premium Apparel & Haute Couture</span>
-        <span class="text-slate-600">|</span>
-        <span class="text-slate-300 font-medium">Free Express Delivery on orders above ৳2,500</span>
+        <span class="text-amber-400">✨</span>
+        <span class="font-medium">Welcome to NexStore Fashion — Premium Apparel & Haute Couture</span>
+        <span class="text-slate-700">|</span>
+        <span class="text-brand-pink font-semibold">Free Express Delivery on orders above ৳2,500</span>
       </div>
       <div class="flex items-center gap-5 text-slate-300">
         <a href="#" class="hover:text-white transition">Size Guide</a>
@@ -58,142 +61,160 @@
         
         <!-- ইউজার অথেনটিকেশন -->
         <div id="authContainer" class="flex items-center gap-2 border-l border-slate-700 pl-4">
-          <button id="loginBtn" onclick="loginWithGoogle()" class="text-luxury-gold hover:text-white font-semibold transition flex items-center gap-1">
+          <button id="loginBtn" onclick="loginWithGoogle()" class="text-brand-pink hover:text-white font-bold transition flex items-center gap-1">
             <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Sign in with Google
           </button>
           <div id="userProfile" class="hidden flex items-center gap-2">
-            <img id="userAvatar" src="" class="w-5 h-5 rounded-full border border-luxury-gold/50" />
-            <span id="userName" class="font-medium text-white text-[11px]"></span>
-            <button onclick="logout()" class="text-slate-400 hover:text-rose-400 text-[10px] ml-1">Logout</button>
+            <img id="userAvatar" src="" class="w-5 h-5 rounded-full border border-slate-500" />
+            <span id="userName" class="font-medium text-white text-xs"></span>
+            <button onclick="logout()" class="text-slate-400 hover:text-red-400 text-[11px] ml-1">Logout</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ২. মেইন হেডার -->
-  <header class="bg-white border-b border-luxury-border sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between gap-6">
+  <!-- ২. মেইন হেডার (ডেক্সটপ ও মোবাইলে সম্পূর্ণ রেসপনসিভ) -->
+  <header class="bg-white shadow-sm sticky top-0 z-40 border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 md:py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 md:gap-6">
       
-      <!-- ব্র্যান্ড লোগো -->
-      <a href="#" class="flex items-center gap-2.5 shrink-0">
-        <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#E8DDD1] to-[#C5A880] text-luxury-dark flex items-center justify-center shadow-sm">
-          <i data-lucide="sparkle" class="w-5 h-5 fill-luxury-dark text-luxury-dark"></i>
-        </span>
-        <div>
-          <span class="text-2xl font-serif font-bold tracking-tight text-[#111111] leading-none block">NexFashion</span>
-          <span class="text-[9px] uppercase tracking-[0.2em] text-[#888888] font-bold block mt-1">Haute Couture & Style</span>
-        </div>
-      </a>
+      <!-- টপ রো: লোগো এবং মোবাইল অ্যাকশন বাটন -->
+      <div class="flex items-center justify-between w-full md:w-auto">
+        <!-- ব্র্যান্ড লোগো -->
+        <a href="#" class="flex items-center gap-2 shrink-0">
+          <span class="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-tr from-brand-pink via-rose-500 to-amber-500 text-white flex items-center justify-center shadow-md shadow-pink-500/20">
+            <i data-lucide="sparkles" class="w-4 h-4 md:w-5 md:h-5"></i>
+          </span>
+          <div>
+            <span class="text-xl md:text-2xl font-black tracking-tight text-slate-900 leading-none block">Nex<span class="text-brand-pink">Fashion</span></span>
+            <span class="text-[8px] md:text-[9px] uppercase tracking-widest text-slate-400 font-extrabold block mt-0.5">Haute Couture & Style</span>
+          </div>
+        </a>
 
-      <!-- সার্চ বার (Pill Shaped with Wine Button) -->
-      <div class="flex-1 max-w-2xl relative">
-        <div class="flex bg-slate-50 border border-slate-200 rounded-full overflow-hidden focus-within:border-luxury-wine focus-within:bg-white transition shadow-sm">
-          <div class="pl-4 flex items-center pointer-events-none text-slate-400">
+        <!-- মোবাইল হেডার অ্যাকশন বাটনস -->
+        <div class="flex items-center gap-2 md:hidden">
+          <button id="adminBtnMobile" onclick="toggleAdminPanel()" class="hidden bg-slate-900 text-amber-400 p-2 rounded-lg text-xs font-bold">
+            <i data-lucide="shield" class="w-4 h-4"></i>
+          </button>
+          <button onclick="toggleCart()" class="relative p-2 text-slate-700 hover:text-brand-pink">
+            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+            <span id="cartCountMobile" class="absolute -top-1 -right-1 bg-brand-pink text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- সার্চ বার (মোবাইলে ফুল উইডথ, ডেক্সটপে সেন্টারে) -->
+      <div class="w-full md:flex-1 md:max-w-2xl relative">
+        <div class="flex border-2 border-slate-200 rounded-xl overflow-hidden focus-within:border-brand-pink transition shadow-sm bg-white">
+          <div class="pl-3 flex items-center pointer-events-none text-slate-400">
             <i data-lucide="search" class="w-4 h-4"></i>
           </div>
-          <input id="searchInput" onkeyup="filterProducts()" type="text" placeholder="Search for high-end fashion, luxury goods..." 
-                 class="w-full px-3.5 py-2 text-xs text-slate-800 bg-transparent focus:outline-none" />
-          <button onclick="filterProducts()" class="bg-luxury-wine hover:bg-luxury-wineLight text-white px-7 py-2 text-xs font-semibold rounded-full transition m-1">
+          <input id="searchInput" onkeyup="filterProducts()" type="text" placeholder="Search for Panjabi, Sarees, Footwear..." 
+                 class="w-full px-2.5 py-1.5 md:py-2 text-xs md:text-sm text-slate-700 focus:outline-none" />
+          <button onclick="filterProducts()" class="bg-brand-pink hover:bg-brand-hoverPink text-white px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm font-bold transition flex items-center gap-1 shrink-0">
             Search
           </button>
         </div>
       </div>
 
-      <!-- রাইট কন্ট্রোলস -->
-      <div class="flex items-center gap-5">
-        <!-- অ্যাডমিন বাটন -->
-        <button id="adminBtn" onclick="toggleAdminPanel()" class="hidden text-xs font-bold text-slate-700 hover:text-luxury-wine flex items-center gap-1.5 transition">
-          <i data-lucide="shield" class="w-3.5 h-3.5 text-luxury-gold"></i> Admin Panel
+      <!-- ডেক্সটপ রাইট কন্ট্রোলস -->
+      <div class="hidden md:flex items-center gap-4 shrink-0">
+        <button id="adminBtn" onclick="toggleAdminPanel()" class="hidden bg-slate-900 hover:bg-black text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow transition">
+          <i data-lucide="shield" class="w-4 h-4 text-amber-400"></i> Admin Panel
         </button>
 
-        <!-- কার্ট বাটন -->
-        <button onclick="toggleCart()" class="relative text-slate-800 hover:text-luxury-wine transition flex items-center gap-2">
-          <i data-lucide="shopping-bag" class="w-5 h-5 text-slate-700"></i>
+        <button onclick="toggleCart()" class="relative p-2 text-slate-700 hover:text-brand-pink transition flex items-center gap-2">
+          <div class="relative">
+            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+            <span id="cartCount" class="absolute -top-1.5 -right-2 bg-brand-pink text-white text-[11px] font-black rounded-full w-5 h-5 flex items-center justify-center shadow">0</span>
+          </div>
           <div class="text-left leading-tight">
-            <span class="text-[10px] uppercase font-bold text-slate-500 block tracking-wider">Shopping Bag</span>
-            <span id="cartCount" class="text-xs font-bold text-[#111111]">: 0</span>
+            <span class="text-[10px] uppercase text-slate-400 block font-bold tracking-wider">Shopping Bag</span>
+            <span id="cartHeaderTotal" class="text-xs font-bold text-slate-800">৳ 0</span>
           </div>
         </button>
       </div>
 
     </div>
 
-    <!-- ক্যাটাগরি সাব-নেভিগেশন বার -->
-    <div class="border-t border-luxury-border bg-white hidden md:block">
-      <div class="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs font-medium text-slate-600 py-2.5">
-        <div class="flex items-center gap-6">
-          <button onclick="filterCategory('All')" class="bg-luxury-dark text-white px-3.5 py-1 rounded-md text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
-            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> All Fashion 👑
+    <!-- ক্যাটাগরি সাব-নেভিগেশন (মোবাইলে টাচ স্ক্রোলিং) -->
+    <div class="border-t border-slate-100 bg-white">
+      <div class="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs font-semibold text-slate-600 py-2 overflow-x-auto no-scrollbar whitespace-nowrap gap-4">
+        <div class="flex items-center gap-3 sm:gap-6">
+          <button onclick="filterCategory('All')" class="text-brand-pink font-bold flex items-center gap-1 bg-pink-50 px-3 py-1 rounded-full shrink-0">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> All Fashion
           </button>
-          <button onclick="filterCategory('Men Collection')" class="hover:text-luxury-wine transition">Men's Apparel</button>
-          <button onclick="filterCategory('Women Collection')" class="hover:text-luxury-wine transition">Women's Collection</button>
-          <button onclick="filterCategory('Footwear')" class="hover:text-luxury-wine transition">Footwear</button>
-          <button onclick="filterCategory('Watches & Accessories')" class="hover:text-luxury-wine transition">Accessories</button>
-          <button onclick="filterCategory('Bags & Leather')" class="hover:text-luxury-wine transition">Bags & Leather Goods</button>
+          <button onclick="filterCategory('Men Collection')" class="hover:text-brand-pink transition shrink-0">Men's Apparel</button>
+          <button onclick="filterCategory('Women Collection')" class="hover:text-brand-pink transition shrink-0">Women's Collection</button>
+          <button onclick="filterCategory('Footwear')" class="hover:text-brand-pink transition shrink-0">Footwear</button>
+          <button onclick="filterCategory('Watches & Accessories')" class="hover:text-brand-pink transition shrink-0">Watches & Accessories</button>
+          <button onclick="filterCategory('Bags & Leather')" class="hover:text-brand-pink transition shrink-0">Leather Bags</button>
         </div>
-        <div class="flex items-center gap-1.5 text-slate-700 text-[11px] font-semibold">
-          <span>🍂</span>
-          <span>Autumn/Winter Arrivals 2026</span>
+        <div class="hidden lg:flex items-center gap-1 text-amber-600 bg-amber-50 px-3 py-1 rounded-full font-bold shrink-0">
+          <i data-lucide="flame" class="w-3.5 h-3.5"></i> Autumn/Winter 2026
         </div>
       </div>
     </div>
   </header>
 
-  <!-- ৩. হিরো সেকশন (~65% / 35% Grid) -->
-  <section class="max-w-7xl mx-auto px-4 mt-6">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+  <!-- ৩. হিরো সেকশন -->
+  <section class="max-w-7xl mx-auto px-4 mt-3 md:mt-5">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 md:gap-4">
       
-      <!-- বাম পাশের কার্ড (Main Hero Banner: ~65%) -->
-      <div class="lg:col-span-8 rounded-[20px] p-8 md:p-12 flex flex-col justify-between shadow-sm relative overflow-hidden min-h-[380px] bg-luxury-dark border border-slate-800">
-        <!-- ব্যাকগ্রাউন্ড স্টুডিও লাক্সারি ছবি (টেইলর্ড স্যুট ও প্রিমিয়াম ফেব্রিকেটেড লুক) -->
-        <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=1600&q=85" alt="Luxury Tailored Menswear" 
-             class="absolute right-0 top-0 h-full w-3/5 object-cover object-center mix-blend-luminosity opacity-40 hover:opacity-50 transition duration-700" />
-        <div class="absolute inset-0 bg-gradient-to-r from-luxury-dark via-luxury-dark/95 to-transparent"></div>
+      <!-- মেইন ফ্যাশন ব্যানার -->
+      <div class="lg:col-span-8 rounded-2xl p-6 sm:p-8 md:p-12 flex flex-col justify-between shadow-lg relative overflow-hidden min-h-[300px] md:min-h-[380px] bg-slate-950 border border-slate-800">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&q=85" alt="Fashion Model" 
+             class="absolute inset-0 w-full h-full object-cover object-center opacity-45 mix-blend-luminosity" />
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-transparent"></div>
 
-        <div class="relative z-10 max-w-md">
-          <span class="inline-flex items-center gap-1 text-luxury-wineLight bg-luxury-wine/10 border border-luxury-wine/40 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4">
-            ✧ AUTUMN / WINTER 2026
+        <div class="relative z-10 max-w-lg">
+          <span class="inline-flex items-center gap-1 bg-brand-pink/20 text-brand-pink border border-brand-pink/40 text-[9px] md:text-[10px] font-black px-2.5 py-0.5 md:px-3 md:py-1 rounded-full uppercase tracking-widest mb-2 md:mb-3 backdrop-blur-sm">
+            ✦ AUTUMN / WINTER 2026
           </span>
-          <h1 class="text-4xl md:text-5xl font-serif font-bold leading-[1.15] text-white tracking-tight">
-            Elegance <br/>Redefined.
+          <h1 class="text-2xl sm:text-3xl md:text-5xl font-serif font-black leading-tight text-white tracking-tight">
+            Elegance <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-pink-400 to-amber-300">Redefined.</span>
           </h1>
-          <p class="text-slate-300 mt-3.5 text-xs md:text-sm leading-relaxed font-light">
+          <p class="text-slate-300 mt-2 md:mt-3 text-xs md:text-sm leading-relaxed max-w-md line-clamp-2 md:line-clamp-none">
             Handcrafted fabrics, bespoke tailoring, and contemporary luxury design. Discover everyday perfection in every stitch.
           </p>
-          <div class="mt-7 flex items-center gap-4">
-            <a href="#productsSection" class="bg-luxury-wine hover:bg-luxury-wineLight text-white font-medium px-6 py-2.5 rounded-full text-xs transition shadow-md">
+          <div class="mt-4 md:mt-6 flex items-center gap-3">
+            <a href="#productsSection" class="bg-brand-pink hover:bg-brand-hoverPink text-white font-bold px-5 py-2 md:px-7 md:py-3 rounded-xl text-xs md:text-sm transition shadow-lg shadow-pink-500/30">
               Shop The Collection
             </a>
-            <span class="text-xs text-slate-400 font-light">Over 2,400+ styles curated</span>
+            <span class="text-[11px] md:text-xs text-slate-300 font-medium hidden sm:inline">Over 2,400+ styles curated</span>
           </div>
+        </div>
+
+        <div class="relative z-10 flex gap-1.5 mt-4">
+          <span class="w-5 md:w-6 h-1.5 bg-brand-pink rounded-full"></span>
+          <span class="w-1.5 md:w-2 h-1.5 bg-slate-600 rounded-full"></span>
+          <span class="w-1.5 md:w-2 h-1.5 bg-slate-600 rounded-full"></span>
         </div>
       </div>
 
-      <!-- ডান পাশের কার্ড (Voucher Card: ~35%) -->
-      <div class="lg:col-span-4 rounded-[20px] p-7 text-white flex flex-col justify-between shadow-sm relative overflow-hidden min-h-[380px]" 
-           style="background: linear-gradient(135deg, #8A182B 0%, #4A0E17 100%);">
-        <div>
-          <span class="bg-white/15 backdrop-blur-sm text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+      <!-- ডান পাশের VIP Fashion Pass ভাউচার কার্ড -->
+      <div class="lg:col-span-4 bg-gradient-to-br from-[#c01844] via-[#9e113c] to-[#780d2d] rounded-2xl p-5 sm:p-6 md:p-7 text-white flex flex-col justify-between shadow-xl relative overflow-hidden min-h-[260px] md:min-h-[380px]">
+        <div class="relative z-10">
+          <span class="bg-white/20 backdrop-blur-md text-white text-[9px] md:text-[10px] font-black px-2.5 py-0.5 md:py-1 rounded-full uppercase tracking-wider inline-block">
             VIP FASHION PASS
           </span>
-          <h3 class="text-2xl font-serif font-bold mt-4 leading-tight">
+          <h3 class="text-2xl sm:text-3xl font-black mt-2 md:mt-3.5 leading-snug tracking-tight">
             Get ৳350 OFF <br/>On New Wardrobe
           </h3>
-          <p class="text-xs text-rose-100/80 mt-2 leading-relaxed font-light">
+          <p class="text-xs text-rose-100/90 mt-1.5 leading-relaxed font-medium">
             Upgrade your festive & casual style. Instant discount applied at checkout.
           </p>
         </div>
 
-        <!-- ইনার ভাউচার কার্ড -->
-        <div class="bg-white rounded-xl p-3.5 text-slate-800 shadow-md flex items-center gap-3 mt-6">
-          <div class="bg-[#F6EFEB] border border-[#E7D6C8] text-[#7A1526] rounded-lg px-2.5 py-1.5 text-center font-mono text-[10px] font-black shrink-0">
-            <span class="block text-[8px] text-slate-500 font-sans uppercase">PROMO</span>
-            STYLE350
+        <!-- ইনার ভাউচার টিকেট -->
+        <div class="relative z-10 bg-white rounded-xl md:rounded-2xl p-3 md:p-4 text-slate-800 shadow-md flex items-center gap-3 mt-4 md:mt-6 border border-white/50">
+          <div class="bg-slate-950 text-white rounded-lg md:rounded-xl px-2.5 py-1.5 md:py-2 text-center font-mono text-[9px] md:text-[10px] font-bold leading-tight shrink-0 shadow-inner">
+            <span class="block text-[7px] md:text-[8px] text-slate-400 uppercase tracking-widest font-sans">PROMO</span>
+            <span class="text-brand-pink font-black text-xs">STYLE350</span>
           </div>
-          <div>
+          <div class="flex-1">
             <p class="text-xs font-bold text-slate-900">Wardrobe Voucher</p>
-            <p class="text-[11px] text-slate-500 font-light">Save ৳350 on apparel orders above ৳2,000</p>
+            <p class="text-[10px] md:text-[11px] text-slate-500 mt-0.5">Save ৳350 on apparel orders above ৳2,000</p>
           </div>
         </div>
       </div>
@@ -201,93 +222,111 @@
     </div>
   </section>
 
-  <!-- ৪. ফ্যাশন ট্রাস্ট ফিচার বার (৪ কলাম) -->
-  <section class="max-w-7xl mx-auto px-4 mt-6">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
-      <div class="bg-white p-4 rounded-xl border border-luxury-border shadow-sm flex items-center gap-3.5">
-        <div class="w-10 h-10 rounded-lg bg-[#FAF6F3] text-luxury-wine flex items-center justify-center shrink-0">
-          <i data-lucide="award" class="w-5 h-5 stroke-[1.5]"></i>
+  <!-- ৪. ফ্যাশন ট্রাস্ট ফিচার বার -->
+  <section class="max-w-7xl mx-auto px-4 mt-4 md:mt-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+      <div class="bg-white p-2.5 sm:p-3.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2.5">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <i data-lucide="award" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </div>
         <div>
-          <h4 class="text-xs font-bold text-[#1A1A1A]">100% Premium Fabrics</h4>
-          <p class="text-[11px] text-slate-500 font-light">Pure Cotton, Silk & Leather</p>
+          <h4 class="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">100% Fabrics</h4>
+          <p class="text-[9px] sm:text-[11px] text-slate-500">Pure Cotton & Silk</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-luxury-border shadow-sm flex items-center gap-3.5">
-        <div class="w-10 h-10 rounded-lg bg-[#FAF6F3] text-luxury-wine flex items-center justify-center shrink-0">
-          <i data-lucide="refresh-cw" class="w-5 h-5 stroke-[1.5]"></i>
+      <div class="bg-white p-2.5 sm:p-3.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2.5">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <i data-lucide="refresh-cw" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </div>
         <div>
-          <h4 class="text-xs font-bold text-[#1A1A1A]">7-Day Easy Exchange</h4>
-          <p class="text-[11px] text-slate-500 font-light">Hassle-free Size & Fitting</p>
+          <h4 class="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">7-Day Return</h4>
+          <p class="text-[9px] sm:text-[11px] text-slate-500">Easy Exchange</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-luxury-border shadow-sm flex items-center gap-3.5">
-        <div class="w-10 h-10 rounded-lg bg-[#FAF6F3] text-luxury-wine flex items-center justify-center shrink-0">
-          <i data-lucide="wallet" class="w-5 h-5 stroke-[1.5]"></i>
+      <div class="bg-white p-2.5 sm:p-3.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2.5">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <i data-lucide="credit-card" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </div>
         <div>
-          <h4 class="text-xs font-bold text-[#1A1A1A]">Cash on Delivery</h4>
-          <p class="text-[11px] text-slate-500 font-light">Inspect & Try Before Pay</p>
+          <h4 class="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">Cash on Delivery</h4>
+          <p class="text-[9px] sm:text-[11px] text-slate-500">Inspect & Pay</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-luxury-border shadow-sm flex items-center gap-3.5">
-        <div class="w-10 h-10 rounded-lg bg-[#FAF6F3] text-luxury-wine flex items-center justify-center shrink-0">
-          <i data-lucide="truck" class="w-5 h-5 stroke-[1.5]"></i>
+      <div class="bg-white p-2.5 sm:p-3.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2.5">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <i data-lucide="truck" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </div>
         <div>
-          <h4 class="text-xs font-bold text-[#1A1A1A]">Express Delivery</h4>
-          <p class="text-[11px] text-slate-500 font-light">24 Hours in Dhaka Metro</p>
+          <h4 class="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">Fast Delivery</h4>
+          <p class="text-[9px] sm:text-[11px] text-slate-500">24-48 Hours</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ৫. লাইভ ফ্যাশন ক্যাটালগ -->
-  <main id="productsSection" class="max-w-7xl mx-auto px-4 py-10 flex-1 w-full">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6 pb-3 border-b border-luxury-border">
+  <main id="productsSection" class="max-w-7xl mx-auto px-4 py-6 md:py-8 flex-1 w-full">
+    <div class="flex justify-between items-center mb-4 md:mb-6 pb-2 md:pb-3 border-b border-slate-200">
       <div>
-        <h2 class="text-2xl font-serif font-bold text-[#111111] flex items-center gap-2">
-          Curated Luxury Collection
+        <h2 class="text-base sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+          <span class="w-2 md:w-2.5 h-5 md:h-6 bg-brand-pink rounded-full inline-block"></span>
+          Curated Outfits
         </h2>
-        <p class="text-xs text-slate-500 mt-1 font-light">Handcrafted designer clothing, luxury footwear & bespoke lifestyle accessories</p>
+        <p class="text-[10px] sm:text-xs text-slate-500 mt-0.5">Designer clothing & lifestyle essentials</p>
       </div>
-      <div>
-        <span id="productTotalCount" class="text-[11px] font-medium bg-white border border-luxury-border px-3.5 py-1 rounded-full text-slate-600">Loading collection...</span>
-      </div>
+      <span id="productTotalCount" class="text-[10px] sm:text-xs font-semibold bg-slate-100 px-2.5 py-1 rounded-full text-slate-600">Loading...</span>
     </div>
 
     <!-- লোডিং স্টেট -->
-    <div id="loadingIndicator" class="text-center py-20">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-2 border-luxury-wine border-t-transparent"></div>
-      <p class="text-xs text-slate-500 font-medium mt-3">Connecting to catalog...</p>
+    <div id="loadingIndicator" class="text-center py-16">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-brand-pink border-t-transparent"></div>
+      <p class="text-xs text-slate-500 font-medium mt-2">Fetching Latest Arrivals...</p>
     </div>
 
-    <!-- প্রোডাক্ট গ্রিড -->
-    <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+    <!-- প্রোডাক্ট গ্রিড (মোবাইলে ২ কলাম, বড় স্ক্রিনে ৪/৫ কলাম) -->
+    <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4"></div>
   </main>
 
   <!-- ৬. কার্ট ড্রয়ার -->
   <div id="cartDrawer" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-end">
-    <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl">
+    <div class="bg-white w-full max-w-md h-full p-4 sm:p-6 flex flex-col justify-between shadow-2xl">
       <div>
-        <div class="flex justify-between items-center border-b border-luxury-border pb-4">
+        <div class="flex justify-between items-center border-b pb-3">
           <div class="flex items-center gap-2">
-            <i data-lucide="shopping-bag" class="w-5 h-5 text-luxury-wine"></i>
-            <h3 class="text-base font-serif font-bold text-slate-900">Your Shopping Bag</h3>
+            <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-pink"></i>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900">Your Wardrobe Cart</h3>
           </div>
-          <button onclick="toggleCart()" class="text-slate-400 hover:text-red-500">
+          <button onclick="toggleCart()" class="text-slate-400 hover:text-red-500 p-1">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
-        <div id="cartItems" class="divide-y divide-luxury-border overflow-y-auto max-h-[60vh] mt-4"></div>
+        <div id="cartItems" class="divide-y overflow-y-auto max-h-[50vh] mt-2"></div>
       </div>
-      <div class="border-t border-luxury-border pt-4">
-        <div class="flex justify-between text-base font-serif font-bold mb-4 text-slate-900">
-          <span>Subtotal:</span>
-          <span id="cartTotal">৳ 0</span>
+      
+      <!-- ভাউচার ও মোট বিল -->
+      <div class="border-t pt-3 space-y-2.5">
+        <div class="flex gap-2">
+          <input id="voucherInput" type="text" placeholder="Promo (STYLE350)" class="flex-1 border rounded-lg px-2.5 py-1.5 text-xs uppercase font-mono focus:outline-none focus:border-brand-pink" />
+          <button onclick="applyVoucher()" class="bg-slate-900 hover:bg-black text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">Apply</button>
         </div>
-        <button onclick="openCheckoutModal()" class="w-full bg-luxury-wine hover:bg-luxury-wineLight text-white font-semibold py-3 rounded-full transition shadow-md flex items-center justify-center gap-2 text-xs">
+        <div id="voucherMsg" class="text-[10px] font-semibold hidden"></div>
+
+        <div class="space-y-1 text-xs">
+          <div class="flex justify-between text-slate-500">
+            <span>Bag Total:</span>
+            <span id="cartSubtotal">৳ 0</span>
+          </div>
+          <div id="discountRow" class="flex justify-between text-emerald-600 font-bold hidden">
+            <span>VIP Voucher Discount:</span>
+            <span id="discountAmount">-৳ 0</span>
+          </div>
+          <div class="flex justify-between text-sm sm:text-base font-black text-slate-900 border-t pt-1.5">
+            <span>Final Total:</span>
+            <span id="cartTotal">৳ 0</span>
+          </div>
+        </div>
+
+        <button onclick="openCheckoutModal()" class="w-full bg-brand-pink hover:bg-brand-hoverPink text-white font-bold py-2.5 sm:py-3 rounded-xl transition shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2 text-xs sm:text-sm">
           Proceed to Order <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
       </div>
@@ -295,36 +334,36 @@
   </div>
 
   <!-- ৭. চেকআউট মডাল -->
-  <div id="checkoutModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
-      <div class="flex justify-between items-center border-b border-luxury-border pb-3">
-        <h3 class="text-base font-serif font-bold text-slate-900 flex items-center gap-2">
-          <i data-lucide="map-pin" class="w-4 h-4 text-luxury-wine"></i> Delivery & Fitting Address
+  <div id="checkoutModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-1.5">
+          <i data-lucide="map-pin" class="w-4 h-4 text-brand-pink"></i> Delivery Address
         </h3>
-        <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-red-500">
+        <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-red-500 p-1">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <form onsubmit="submitOrder(event)" class="space-y-3.5 mt-4">
+      <form onsubmit="submitOrder(event)" class="space-y-3 mt-3">
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Customer Full Name</label>
-          <input id="orderName" type="text" required class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-luxury-wine" />
+          <input id="orderName" type="text" required class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-pink" />
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Mobile Phone Number</label>
-          <input id="orderPhone" type="tel" required placeholder="017XXXXXXXX" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-luxury-wine" />
+          <input id="orderPhone" type="tel" required placeholder="017XXXXXXXX" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-pink" />
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Full Delivery Address</label>
-          <textarea id="orderAddress" rows="2" required placeholder="House #, Road #, Area, District" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-luxury-wine"></textarea>
+          <textarea id="orderAddress" rows="2" required placeholder="House #, Road #, Area, District" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-pink"></textarea>
         </div>
-        <div class="bg-slate-50 p-3 rounded-xl border border-luxury-border text-xs text-slate-600">
+        <div class="bg-slate-50 p-2.5 rounded-xl border text-[11px] text-slate-600">
           <p class="font-bold text-slate-900 flex items-center gap-1">
             <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i> Cash on Delivery (COD)
           </p>
-          <p class="mt-0.5 text-[11px] font-light">Inspect and verify size/fabric before making payment.</p>
+          <p class="mt-0.5">Inspect size/fabric before making payment.</p>
         </div>
-        <button type="submit" id="orderSubmitBtn" class="w-full bg-luxury-wine text-white font-semibold py-2.5 rounded-full hover:bg-luxury-wineLight transition shadow text-xs">
+        <button type="submit" id="orderSubmitBtn" class="w-full bg-brand-pink text-white font-bold py-2.5 rounded-xl hover:bg-brand-hoverPink transition shadow-md text-xs">
           Confirm Fashion Order
         </button>
       </form>
@@ -332,128 +371,169 @@
   </div>
 
   <!-- ৮. সিকিউর অ্যাডমিন ড্যাশবোর্ড -->
-  <div id="adminModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
-      <div class="bg-luxury-dark text-white px-6 py-4 flex justify-between items-center">
+  <div id="adminModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-hidden flex flex-col shadow-2xl">
+      <div class="bg-slate-950 text-white px-4 sm:px-6 py-3.5 flex justify-between items-center">
         <div class="flex items-center gap-2">
-          <i data-lucide="shield-check" class="w-5 h-5 text-luxury-gold"></i>
+          <i data-lucide="shield-check" class="w-5 h-5 text-amber-400"></i>
           <div>
-            <h3 class="font-bold text-sm">NexFashion Manager</h3>
-            <p class="text-[11px] text-slate-400">Authorized: marufclaud@gmail.com</p>
+            <h3 class="font-bold text-xs sm:text-sm">NexStore Fashion Manager</h3>
+            <p class="text-[10px] text-slate-400">marufclaud@gmail.com</p>
           </div>
         </div>
-        <button onclick="toggleAdminPanel()" class="text-slate-400 hover:text-white">
-          <i data-lucide="x" class="w-6 h-6"></i>
+        <button onclick="toggleAdminPanel()" class="text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <div class="border-b bg-slate-50 flex justify-between items-center px-6">
+      <div class="border-b bg-slate-50 flex justify-between items-center px-4 sm:px-6 overflow-x-auto whitespace-nowrap">
         <div class="flex text-xs font-bold">
-          <button onclick="switchAdminTab('addProduct')" id="tabBtnAdd" class="py-3 px-4 text-luxury-wine border-b-2 border-luxury-wine">Add Outfit</button>
-          <button onclick="switchAdminTab('viewOrders')" id="tabBtnOrders" class="py-3 px-4 text-slate-500 hover:text-slate-900">Customer Orders</button>
-          <button onclick="switchAdminTab('manageProducts')" id="tabBtnManage" class="py-3 px-4 text-slate-500 hover:text-slate-900">Wardrobe Inventory</button>
+          <button onclick="switchAdminTab('addProduct')" id="tabBtnAdd" class="py-3 px-3 sm:px-4 text-brand-pink border-b-2 border-brand-pink">Add Item</button>
+          <button onclick="switchAdminTab('viewOrders')" id="tabBtnOrders" class="py-3 px-3 sm:px-4 text-slate-500 hover:text-slate-900">Orders</button>
+          <button onclick="switchAdminTab('manageProducts')" id="tabBtnManage" class="py-3 px-3 sm:px-4 text-slate-500 hover:text-slate-900">Inventory</button>
         </div>
-        <button onclick="seedDemoProducts()" id="seedBtn" class="text-[11px] bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3.5 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Seed 8 Fashion Products
+        <button onclick="seedDemoProducts()" id="seedBtn" class="text-[10px] sm:text-[11px] bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg transition shadow-sm shrink-0">
+          Seed 8 Outfits
         </button>
       </div>
 
-      <div class="p-6 overflow-y-auto flex-1">
+      <div class="p-4 sm:p-6 overflow-y-auto flex-1">
         <div id="tabContentAdd">
-          <form onsubmit="adminAddProduct(event)" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onsubmit="adminAddProduct(event)" class="space-y-3.5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
                 <label class="block text-xs font-semibold text-slate-700 mb-1">Product Title</label>
-                <input id="pTitle" type="text" required placeholder="Luxury Silk Saree / Bespoke Blazer" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-luxury-wine" />
+                <input id="pTitle" type="text" required placeholder="Luxury Silk Saree / Bespoke Blazer" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-pink" />
               </div>
               <div>
                 <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
-                <select id="pCategory" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-luxury-wine">
+                <select id="pCategory" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-pink">
                   <option value="Men Collection">Men Collection</option>
                   <option value="Women Collection">Women Collection</option>
-                  <option value="Footwear">Footwear</option>
+                  <option value="Footwear">Footwear & Sneakers</option>
                   <option value="Watches & Accessories">Watches & Accessories</option>
                   <option value="Bags & Leather">Bags & Leather</option>
                 </select>
               </div>
               <div>
                 <label class="block text-xs font-semibold text-slate-700 mb-1">Selling Price (৳)</label>
-                <input id="pPrice" type="number" required placeholder="3200" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-luxury-wine" />
+                <input id="pPrice" type="number" required placeholder="3200" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-pink" />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1">Original Price (৳ for discount)</label>
-                <input id="pOriginalPrice" type="number" placeholder="4200" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-luxury-wine" />
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Regular / Original Price (৳)</label>
+                <input id="pOriginalPrice" type="number" placeholder="4200" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-pink" />
               </div>
             </div>
 
-            <!-- ছবি নির্বাচন (ফাইল আপলোড বা URL) -->
-            <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50/50">
+            <!-- ছবি নির্বাচন -->
+            <div class="border border-slate-200 rounded-xl p-3 bg-slate-50/50">
               <div class="flex items-center justify-between mb-2">
-                <label class="block text-xs font-bold text-slate-700">Outfit Photo (ছবি যোগ করুন)</label>
+                <label class="block text-xs font-bold text-slate-700">Outfit Photo (ছবি)</label>
                 <div class="flex gap-1 bg-slate-200/70 p-1 rounded-lg">
-                  <button type="button" onclick="setImageMode('file')" id="modeFileBtn" class="text-[11px] font-bold px-2.5 py-1 rounded-md bg-white text-slate-900 shadow-sm transition flex items-center gap-1">
-                    <i data-lucide="upload" class="w-3 h-3"></i> Device Upload
+                  <button type="button" onclick="setImageMode('file')" id="modeFileBtn" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white text-slate-900 shadow-sm transition">
+                    Device Upload
                   </button>
-                  <button type="button" onclick="setImageMode('url')" id="modeUrlBtn" class="text-[11px] font-bold px-2.5 py-1 rounded-md text-slate-600 transition flex items-center gap-1">
-                    <i data-lucide="link" class="w-3 h-3"></i> Image URL
+                  <button type="button" onclick="setImageMode('url')" id="modeUrlBtn" class="text-[10px] font-bold px-2 py-0.5 rounded-md text-slate-600 transition">
+                    Image URL
                   </button>
                 </div>
               </div>
 
-              <div id="fileUploadContainer" class="border-2 border-dashed border-slate-300 hover:border-luxury-wine rounded-xl p-5 text-center cursor-pointer transition bg-white relative">
+              <div id="fileUploadContainer" class="border-2 border-dashed border-slate-300 hover:border-brand-pink rounded-xl p-4 text-center cursor-pointer transition bg-white relative">
                 <input id="pImageFile" type="file" accept="image/*" onchange="previewSelectedFile(event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
                 <div id="fileUploadPrompt" class="flex flex-col items-center justify-center">
-                  <i data-lucide="image-plus" class="w-8 h-8 text-luxury-wine mb-1.5"></i>
-                  <p class="text-xs font-bold text-slate-800">Select outfit photo from PC or Phone</p>
-                  <p class="text-[10px] text-slate-400 mt-0.5">High definition fashion photo</p>
+                  <i data-lucide="image-plus" class="w-6 h-6 text-brand-pink mb-1"></i>
+                  <p class="text-xs font-bold text-slate-800">Select photo from PC or Phone</p>
                 </div>
               </div>
 
               <div id="urlUploadContainer" class="hidden">
-                <input id="pImage" type="url" oninput="previewUrlImage(this.value)" placeholder="https://images.unsplash.com/photo-..." class="w-full border rounded-xl px-3 py-2 text-xs bg-white focus:outline-none focus:border-luxury-wine" />
+                <input id="pImage" type="url" oninput="previewUrlImage(this.value)" placeholder="https://images.unsplash.com/photo-..." class="w-full border rounded-xl px-3 py-2 text-xs bg-white focus:outline-none focus:border-brand-pink" />
               </div>
 
-              <div id="imagePreviewContainer" class="hidden mt-3 flex items-center gap-3 p-2.5 bg-white rounded-xl border border-slate-200 shadow-sm">
-                <img id="imagePreview" src="" class="w-14 h-14 object-contain rounded-lg border bg-slate-50 p-1" />
+              <div id="imagePreviewContainer" class="hidden mt-2.5 flex items-center gap-3 p-2 bg-white rounded-xl border border-slate-200 shadow-sm">
+                <img id="imagePreview" src="" class="w-12 h-12 object-contain rounded-lg border bg-slate-50 p-1" />
                 <div class="flex-1">
-                  <p class="text-xs font-bold text-slate-800">Image Selected</p>
-                  <p id="imagePreviewInfo" class="text-[10px] text-emerald-600 font-semibold">Ready to upload</p>
+                  <p class="text-xs font-bold text-slate-800">Image Ready</p>
                 </div>
-                <button type="button" onclick="clearSelectedImage()" class="text-xs text-red-500 hover:underline font-bold px-2 py-1">Remove</button>
+                <button type="button" onclick="clearSelectedImage()" class="text-xs text-red-500 font-bold px-2">Remove</button>
               </div>
             </div>
 
-            <button type="submit" id="addProductBtn" class="bg-luxury-wine hover:bg-luxury-wineLight text-white font-semibold px-6 py-2.5 rounded-full text-xs transition shadow">
+            <button type="submit" id="addProductBtn" class="w-full sm:w-auto bg-brand-pink hover:bg-brand-hoverPink text-white font-bold px-6 py-2.5 rounded-xl text-xs transition shadow-md">
               Publish Fashion Item
             </button>
           </form>
         </div>
 
         <div id="tabContentOrders" class="hidden">
-          <div id="ordersList" class="space-y-3"></div>
+          <div id="ordersList" class="space-y-2.5"></div>
         </div>
 
         <div id="tabContentManage" class="hidden">
-          <div id="manageProductList" class="divide-y text-sm"></div>
+          <div id="manageProductList" class="divide-y text-xs"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ৯. মিনিমালিস্ট ফুটার -->
-  <footer class="bg-white border-t border-luxury-border py-6 text-xs text-slate-500 mt-16">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <div class="flex items-center gap-3 text-slate-400">
-        <a href="#" class="hover:text-luxury-wine transition"><i data-lucide="facebook" class="w-4 h-4"></i></a>
-        <a href="#" class="hover:text-luxury-wine transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-        <a href="#" class="hover:text-luxury-wine transition"><i data-lucide="music" class="w-4 h-4"></i></a>
+  <!-- ৯. মোবাইল স্টিকি বটম অ্যাপ বার (App-like Bottom Navigation) -->
+  <div class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 md:hidden py-1.5 px-6 flex justify-between items-center shadow-lg text-slate-600 text-[10px] font-bold">
+    <a href="#" class="flex flex-col items-center gap-0.5 text-brand-pink">
+      <i data-lucide="home" class="w-4 h-4"></i>
+      <span>Home</span>
+    </a>
+    <a href="#productsSection" class="flex flex-col items-center gap-0.5 hover:text-brand-pink">
+      <i data-lucide="grid" class="w-4 h-4"></i>
+      <span>Catalog</span>
+    </a>
+    <button onclick="toggleCart()" class="flex flex-col items-center gap-0.5 hover:text-brand-pink relative">
+      <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+      <span id="mobileBottomCartBadge" class="absolute -top-1 -right-2 bg-brand-pink text-white text-[9px] rounded-full w-3.5 h-3.5 flex items-center justify-center">0</span>
+      <span>Bag</span>
+    </button>
+    <button onclick="loginWithGoogle()" class="flex flex-col items-center gap-0.5 hover:text-brand-pink">
+      <i data-lucide="user" class="w-4 h-4"></i>
+      <span>Account</span>
+    </button>
+  </div>
+
+  <!-- ১০. ফুটার -->
+  <footer class="bg-slate-950 text-slate-400 text-xs mt-12 pt-8 md:pt-12 pb-6 md:pb-8 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8">
+      <div>
+        <span class="text-lg md:text-xl font-black text-white tracking-tight">Nex<span class="text-brand-pink">Fashion</span></span>
+        <p class="mt-2 text-slate-400 text-xs leading-relaxed">
+          The ultimate destination for contemporary haute couture, authentic designer outfits, handcrafted fabrics, and premium lifestyle goods.
+        </p>
       </div>
-      <p class="text-center font-light">
-        © 2026 NexFashion. All Rights Reserved.
-      </p>
-      <div class="text-[11px] text-slate-400">
-        Bespoke Turnkey Platform
+      <div>
+        <h5 class="text-white font-bold mb-2 uppercase tracking-wider text-[11px]">Collections</h5>
+        <ul class="space-y-1.5 text-xs">
+          <li><a href="#" class="hover:text-white transition">Men's Premium Wear</a></li>
+          <li><a href="#" class="hover:text-white transition">Women's Designer Wear</a></li>
+          <li><a href="#" class="hover:text-white transition">Footwear & Leather Goods</a></li>
+        </ul>
       </div>
+      <div>
+        <h5 class="text-white font-bold mb-2 uppercase tracking-wider text-[11px]">Customer Support</h5>
+        <p class="text-brand-pink font-bold text-xs">+880 1700-000000</p>
+        <p class="text-slate-400 text-[11px] mt-1">support@nexfashion.com</p>
+        <p class="text-slate-400 text-[11px]">Dhaka, Bangladesh</p>
+      </div>
+      <div>
+        <h5 class="text-white font-bold mb-2 uppercase tracking-wider text-[11px]">Guaranteed Safe Checkout</h5>
+        <div class="flex flex-wrap gap-1.5 text-[10px] font-bold text-slate-900 mt-2">
+          <span class="bg-white px-2 py-0.5 rounded">bKash</span>
+          <span class="bg-white px-2 py-0.5 rounded">Nagad</span>
+          <span class="bg-white px-2 py-0.5 rounded">Visa</span>
+          <span class="bg-white px-2 py-0.5 rounded">Mastercard</span>
+          <span class="bg-white px-2 py-0.5 rounded text-brand-pink">COD</span>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-slate-900 max-w-7xl mx-auto px-4 pt-4 text-center text-slate-500 text-[11px]">
+      © 2026 NexStore Fashion Ltd. Designed & Developed by Maruf Dev. All Rights Reserved.
     </div>
   </footer>
 
@@ -485,12 +565,14 @@
     let cart = [];
     let currentCategory = 'All';
     let currentFinalImage = '';
+    let appliedDiscount = 0;
 
     onAuthStateChanged(auth, (user) => {
       currentUser = user;
       const loginBtn = document.getElementById("loginBtn");
       const userProfile = document.getElementById("userProfile");
       const adminBtn = document.getElementById("adminBtn");
+      const adminBtnMobile = document.getElementById("adminBtnMobile");
 
       if (user) {
         loginBtn.classList.add("hidden");
@@ -500,13 +582,16 @@
 
         if (user.email === ADMIN_EMAIL) {
           adminBtn.classList.remove("hidden");
+          adminBtnMobile.classList.remove("hidden");
         } else {
           adminBtn.classList.add("hidden");
+          adminBtnMobile.classList.add("hidden");
         }
       } else {
         loginBtn.classList.remove("hidden");
         userProfile.classList.add("hidden");
         adminBtn.classList.add("hidden");
+        adminBtnMobile.classList.add("hidden");
       }
       lucide.createIcons();
     });
@@ -530,7 +615,7 @@
       snapshot.forEach((docSnap) => {
         products.push({ id: docSnap.id, ...docSnap.data() });
       });
-      document.getElementById("productTotalCount").innerText = `${products.length} Outfits in Catalog`;
+      document.getElementById("productTotalCount").innerText = `${products.length} Available`;
       applyFilters();
       renderAdminManageProducts();
     });
@@ -539,46 +624,46 @@
       const grid = document.getElementById("productGrid");
       if (items.length === 0) {
         grid.innerHTML = `
-          <div class="col-span-full text-center py-16 bg-white rounded-2xl border border-luxury-border p-8 shadow-sm">
-            <i data-lucide="package-open" class="w-12 h-12 text-slate-300 mx-auto mb-3"></i>
-            <h4 class="font-serif font-bold text-slate-700">No outfits available in this category</h4>
-            <p class="text-xs text-slate-400 mt-1 font-light">Please select another category or check back later.</p>
+          <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <i data-lucide="package-open" class="w-10 h-10 text-slate-300 mx-auto mb-2"></i>
+            <h4 class="font-bold text-xs sm:text-sm text-slate-700">No outfits available in this category</h4>
+            <p class="text-[10px] sm:text-xs text-slate-400 mt-1">Please check another category.</p>
           </div>
         `;
         lucide.createIcons();
         return;
       }
       grid.innerHTML = items.map(p => `
-        <div class="bg-white border border-luxury-border rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
-          <div class="relative bg-[#FAF8F5] p-3 flex items-center justify-center h-52 overflow-hidden">
+        <div class="bg-white border border-slate-100 rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-lg transition flex flex-col justify-between group">
+          <div class="relative bg-slate-50 p-2 flex items-center justify-center h-44 sm:h-56 overflow-hidden">
             ${p.originalPrice && p.originalPrice > p.price ? `
-              <span class="absolute top-2.5 left-2.5 bg-luxury-wine text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm">
+              <span class="absolute top-2 left-2 bg-brand-pink text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm">
                 -${Math.round((1 - p.price / p.originalPrice) * 100)}%
               </span>
             ` : ''}
-            <span class="absolute top-2.5 right-2.5 bg-white/90 backdrop-blur-sm text-slate-800 text-[9px] font-bold px-2 py-0.5 rounded shadow-sm">
-              Ready Stock
+            <span class="absolute top-2 right-2 bg-emerald-100 text-emerald-800 text-[8px] sm:text-[9px] font-extrabold px-1.5 py-0.5 rounded">
+              Ready
             </span>
-            <img src="${p.image}" alt="${p.title}" class="h-full w-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-500">
+            <img src="${p.image}" alt="${p.title}" class="h-full w-full object-cover rounded-lg sm:rounded-xl group-hover:scale-105 transition-transform duration-500">
           </div>
           
-          <div class="p-4 flex flex-col flex-1 justify-between">
+          <div class="p-2.5 sm:p-4 flex flex-col flex-1 justify-between">
             <div>
-              <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">
+              <div class="flex items-center justify-between text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">
                 <span>${p.category || 'Fashion'}</span>
-                <span class="text-amber-600 flex items-center gap-0.5">★ 4.9</span>
+                <span class="text-amber-500">★ 4.9</span>
               </div>
-              <h4 class="font-serif font-bold text-xs text-slate-900 line-clamp-2 leading-snug group-hover:text-luxury-wine transition" title="${p.title}">
+              <h4 class="font-bold text-[11px] sm:text-xs text-slate-800 line-clamp-2 leading-snug group-hover:text-brand-pink transition" title="${p.title}">
                 ${p.title}
               </h4>
-              <div class="mt-2.5 flex items-baseline gap-2">
-                <span class="text-sm font-bold text-luxury-wine">৳ ${Number(p.price).toLocaleString()}</span>
-                ${p.originalPrice ? `<span class="text-[11px] text-slate-400 line-through font-light">৳ ${Number(p.originalPrice).toLocaleString()}</span>` : ''}
+              <div class="mt-1.5 sm:mt-2.5 flex items-baseline gap-1.5">
+                <span class="text-xs sm:text-base font-black text-brand-pink">৳ ${Number(p.price).toLocaleString()}</span>
+                ${p.originalPrice ? `<span class="text-[10px] sm:text-xs text-slate-400 line-through">৳ ${Number(p.originalPrice).toLocaleString()}</span>` : ''}
               </div>
             </div>
 
-            <button onclick="addToCart('${p.id}')" class="mt-3.5 w-full bg-[#1A1A1A] text-white hover:bg-luxury-wine text-xs font-semibold py-2 rounded-full transition flex items-center justify-center gap-1.5 shadow-sm">
-              <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i> Add to Bag
+            <button onclick="addToCart('${p.id}')" class="mt-2.5 sm:mt-3.5 w-full bg-slate-900 text-white hover:bg-brand-pink text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 rounded-lg sm:rounded-xl transition flex items-center justify-center gap-1 shadow-sm">
+              <i data-lucide="shopping-bag" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i> Add
             </button>
           </div>
         </div>
@@ -607,28 +692,75 @@
       renderProducts(filtered);
     }
 
-    // কার্ট
+    // কার্ট সিস্টেম
     window.addToCart = (id) => {
       const item = products.find(p => p.id === id);
       if (item) {
-        cart.push(item);
+        const existing = cart.find(c => c.id === id);
+        if (existing) {
+          existing.qty = (existing.qty || 1) + 1;
+        } else {
+          cart.push({ ...item, qty: 1 });
+        }
         updateCartUI();
         toggleCart(true);
       }
     };
 
+    window.changeCartQty = (index, delta) => {
+      if (cart[index]) {
+        cart[index].qty = (cart[index].qty || 1) + delta;
+        if (cart[index].qty <= 0) {
+          cart.splice(index, 1);
+        }
+        updateCartUI();
+      }
+    };
+
+    window.applyVoucher = () => {
+      const code = (document.getElementById("voucherInput").value || "").trim().toUpperCase();
+      const msg = document.getElementById("voucherMsg");
+      const subtotal = cart.reduce((sum, i) => sum + (Number(i.price) * (i.qty || 1)), 0);
+
+      if (code === "STYLE350") {
+        if (subtotal >= 2000) {
+          appliedDiscount = 350;
+          msg.className = "text-[10px] font-semibold text-emerald-600 block";
+          msg.innerText = "✓ VIP Voucher applied! ৳350 Discount activated.";
+        } else {
+          msg.className = "text-[10px] font-semibold text-red-500 block";
+          msg.innerText = "Minimum order ৳2,000 required for STYLE350.";
+        }
+      } else {
+        msg.className = "text-[10px] font-semibold text-red-500 block";
+        msg.innerText = "Invalid voucher code.";
+      }
+      updateCartUI();
+    };
+
     window.updateCartUI = () => {
-      document.getElementById("cartCount").innerText = `: ${cart.length}`;
+      const totalCount = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
+      document.getElementById("cartCount").innerText = totalCount;
+      document.getElementById("cartCountMobile").innerText = totalCount;
+      document.getElementById("mobileBottomCartBadge").innerText = totalCount;
+
       const cartItems = document.getElementById("cartItems");
+
       if (cart.length === 0) {
-        cartItems.innerHTML = '<p class="text-center text-slate-400 py-12 text-xs font-light">Your shopping bag is empty</p>';
+        cartItems.innerHTML = '<p class="text-center text-slate-400 py-10 text-xs">Your shopping bag is empty</p>';
+        appliedDiscount = 0;
       } else {
         cartItems.innerHTML = cart.map((item, index) => `
-          <div class="py-3 flex justify-between items-center gap-3">
-            <img src="${item.image}" class="w-12 h-14 object-cover bg-slate-50 rounded-lg border" />
+          <div class="py-2.5 flex justify-between items-center gap-2.5">
+            <img src="${item.image}" class="w-10 h-12 object-cover bg-slate-50 rounded-lg border" />
             <div class="flex-1">
-              <p class="font-serif font-bold text-xs text-slate-800 line-clamp-1">${item.title}</p>
-              <p class="text-xs font-bold text-luxury-wine mt-0.5">৳ ${Number(item.price).toLocaleString()}</p>
+              <p class="font-bold text-xs text-slate-800 line-clamp-1">${item.title}</p>
+              <p class="text-xs font-black text-brand-pink mt-0.5">৳ ${Number(item.price).toLocaleString()}</p>
+              <div class="flex items-center gap-2 mt-1">
+                <button onclick="changeCartQty(${index}, -1)" class="w-5 h-5 bg-slate-100 rounded text-xs font-bold hover:bg-slate-200">-</button>
+                <span class="text-xs font-semibold">${item.qty || 1}</span>
+                <button onclick="changeCartQty(${index}, 1)" class="w-5 h-5 bg-slate-100 rounded text-xs font-bold hover:bg-slate-200">+</button>
+              </div>
             </div>
             <button onclick="removeFromCart(${index})" class="text-slate-400 hover:text-red-500 p-1">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -636,8 +768,24 @@
           </div>
         `).join('');
       }
-      const total = cart.reduce((sum, i) => sum + Number(i.price), 0);
-      document.getElementById("cartTotal").innerText = `৳ ${total.toLocaleString()}`;
+
+      const subtotal = cart.reduce((sum, i) => sum + (Number(i.price) * (i.qty || 1)), 0);
+      if (subtotal < 2000) appliedDiscount = 0;
+
+      const finalTotal = Math.max(0, subtotal - appliedDiscount);
+
+      document.getElementById("cartSubtotal").innerText = `৳ ${subtotal.toLocaleString()}`;
+      document.getElementById("cartTotal").innerText = `৳ ${finalTotal.toLocaleString()}`;
+      document.getElementById("cartHeaderTotal").innerText = `৳ ${finalTotal.toLocaleString()}`;
+
+      const discountRow = document.getElementById("discountRow");
+      if (appliedDiscount > 0) {
+        discountRow.classList.remove("hidden");
+        document.getElementById("discountAmount").innerText = `-৳ ${appliedDiscount}`;
+      } else {
+        discountRow.classList.add("hidden");
+      }
+
       lucide.createIcons();
     };
 
@@ -677,6 +825,9 @@
       btn.disabled = true;
       btn.innerText = "Placing Order...";
 
+      const subtotal = cart.reduce((s, i) => s + (Number(i.price) * (i.qty || 1)), 0);
+      const finalAmount = Math.max(0, subtotal - appliedDiscount);
+
       try {
         const orderData = {
           userId: currentUser.uid,
@@ -684,8 +835,10 @@
           customerName: document.getElementById("orderName").value,
           customerPhone: document.getElementById("orderPhone").value,
           deliveryAddress: document.getElementById("orderAddress").value,
-          items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, image: i.image })),
-          totalAmount: cart.reduce((s, i) => s + Number(i.price), 0),
+          items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, image: i.image, qty: i.qty || 1 })),
+          subtotal: subtotal,
+          discount: appliedDiscount,
+          totalAmount: finalAmount,
           status: "Pending",
           createdAt: serverTimestamp()
         };
@@ -693,6 +846,7 @@
         await addDoc(collection(db, "orders"), orderData);
         alert("🎉 Fashion Order Placed Successfully! We will confirm and arrange delivery.");
         cart = [];
+        appliedDiscount = 0;
         updateCartUI();
         closeCheckoutModal();
       } catch (err) {
@@ -716,13 +870,13 @@
       const urlContainer = document.getElementById("urlUploadContainer");
 
       if (mode === 'file') {
-        fileBtn.className = "text-[11px] font-bold px-2.5 py-1 rounded-md bg-white text-slate-900 shadow-sm transition flex items-center gap-1";
-        urlBtn.className = "text-[11px] font-bold px-2.5 py-1 rounded-md text-slate-600 transition flex items-center gap-1";
+        fileBtn.className = "text-[10px] font-bold px-2 py-0.5 rounded-md bg-white text-slate-900 shadow-sm transition";
+        urlBtn.className = "text-[10px] font-bold px-2 py-0.5 rounded-md text-slate-600 transition";
         fileContainer.classList.remove("hidden");
         urlContainer.classList.add("hidden");
       } else {
-        urlBtn.className = "text-[11px] font-bold px-2.5 py-1 rounded-md bg-white text-slate-900 shadow-sm transition flex items-center gap-1";
-        fileBtn.className = "text-[11px] font-bold px-2.5 py-1 rounded-md text-slate-600 transition flex items-center gap-1";
+        urlBtn.className = "text-[10px] font-bold px-2 py-0.5 rounded-md bg-white text-slate-900 shadow-sm transition";
+        fileBtn.className = "text-[10px] font-bold px-2 py-0.5 rounded-md text-slate-600 transition";
         urlContainer.classList.remove("hidden");
         fileContainer.classList.add("hidden");
       }
@@ -758,7 +912,6 @@
           currentFinalImage = canvas.toDataURL("image/jpeg", 0.85);
 
           document.getElementById("imagePreview").src = currentFinalImage;
-          document.getElementById("imagePreviewInfo").innerText = `${file.name} (Ready)`;
           document.getElementById("imagePreviewContainer").classList.remove("hidden");
         };
         img.src = event.target.result;
@@ -770,7 +923,6 @@
       if (url.trim().length > 5) {
         currentFinalImage = url.trim();
         document.getElementById("imagePreview").src = currentFinalImage;
-        document.getElementById("imagePreviewInfo").innerText = "Web Photo Ready";
         document.getElementById("imagePreviewContainer").classList.remove("hidden");
       }
     };
@@ -787,20 +939,20 @@
       document.getElementById("tabContentAdd").classList.add("hidden");
       document.getElementById("tabContentOrders").classList.add("hidden");
       document.getElementById("tabContentManage").classList.add("hidden");
-      document.getElementById("tabBtnAdd").className = "py-3 px-4 text-slate-500 hover:text-slate-900";
-      document.getElementById("tabBtnOrders").className = "py-3 px-4 text-slate-500 hover:text-slate-900";
-      document.getElementById("tabBtnManage").className = "py-3 px-4 text-slate-500 hover:text-slate-900";
+      document.getElementById("tabBtnAdd").className = "py-3 px-3 sm:px-4 text-slate-500 hover:text-slate-900";
+      document.getElementById("tabBtnOrders").className = "py-3 px-3 sm:px-4 text-slate-500 hover:text-slate-900";
+      document.getElementById("tabBtnManage").className = "py-3 px-3 sm:px-4 text-slate-500 hover:text-slate-900";
 
       if (tab === 'addProduct') {
         document.getElementById("tabContentAdd").classList.remove("hidden");
-        document.getElementById("tabBtnAdd").className = "py-3 px-4 text-luxury-wine border-b-2 border-luxury-wine";
+        document.getElementById("tabBtnAdd").className = "py-3 px-3 sm:px-4 text-brand-pink border-b-2 border-brand-pink";
       } else if (tab === 'viewOrders') {
         document.getElementById("tabContentOrders").classList.remove("hidden");
-        document.getElementById("tabBtnOrders").className = "py-3 px-4 text-luxury-wine border-b-2 border-luxury-wine";
+        document.getElementById("tabBtnOrders").className = "py-3 px-3 sm:px-4 text-brand-pink border-b-2 border-brand-pink";
         loadAdminOrders();
       } else if (tab === 'manageProducts') {
         document.getElementById("tabContentManage").classList.remove("hidden");
-        document.getElementById("tabBtnManage").className = "py-3 px-4 text-luxury-wine border-b-2 border-luxury-wine";
+        document.getElementById("tabBtnManage").className = "py-3 px-3 sm:px-4 text-brand-pink border-b-2 border-brand-pink";
       }
       lucide.createIcons();
     };
@@ -838,11 +990,10 @@
       }
     };
 
-    // ৮টি লাক্সারি ফ্যাশন প্রোডাক্ট সিড
     window.seedDemoProducts = async () => {
       if (!confirm("Are you sure you want to add 8 premium fashion items to your database?")) return;
       const btn = document.getElementById("seedBtn");
-      btn.innerText = "Loading fashion items...";
+      btn.innerText = "Loading...";
       btn.disabled = true;
 
       const fashionSamples = [
@@ -913,7 +1064,7 @@
       } catch (err) {
         alert("Seed error: " + err.message);
       } finally {
-        btn.innerText = "Seed 8 Fashion Products";
+        btn.innerText = "Seed 8 Outfits";
         btn.disabled = false;
       }
     };
@@ -922,15 +1073,15 @@
       const container = document.getElementById("manageProductList");
       if (!container) return;
       container.innerHTML = products.map(p => `
-        <div class="py-3 flex justify-between items-center gap-4">
-          <div class="flex items-center gap-3">
+        <div class="py-2.5 flex justify-between items-center gap-3">
+          <div class="flex items-center gap-2.5">
             <img src="${p.image}" class="w-10 h-12 object-cover rounded-lg border bg-slate-50" />
             <div>
               <p class="font-bold text-xs text-slate-800">${p.title}</p>
-              <p class="text-[11px] text-luxury-wine font-semibold">৳ ${p.price}</p>
+              <p class="text-[11px] text-brand-pink font-semibold">৳ ${p.price}</p>
             </div>
           </div>
-          <button onclick="adminDeleteProduct('${p.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold px-3 py-1 bg-red-50 rounded-lg">Delete</button>
+          <button onclick="adminDeleteProduct('${p.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold px-2 py-1 bg-red-50 rounded">Delete</button>
         </div>
       `).join('');
       lucide.createIcons();
@@ -956,16 +1107,16 @@
         snap.forEach(d => {
           const o = d.data();
           html += `
-            <div class="border rounded-xl p-4 bg-slate-50 flex flex-col md:flex-row justify-between gap-3 items-start md:items-center">
+            <div class="border rounded-xl p-3 bg-slate-50 flex flex-col md:flex-row justify-between gap-2.5 items-start md:items-center">
               <div>
-                <span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full uppercase">${o.status || 'Pending'}</span>
-                <p class="font-bold text-xs mt-1.5 text-slate-800">${o.customerName} (${o.customerPhone})</p>
-                <p class="text-[11px] text-slate-500">Address: ${o.deliveryAddress}</p>
-                <p class="text-[11px] font-bold text-luxury-wine mt-1">Total: ৳ ${Number(o.totalAmount).toLocaleString()} (${o.items?.length || 0} items)</p>
+                <span class="text-[9px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded uppercase">${o.status || 'Pending'}</span>
+                <p class="font-bold text-xs mt-1 text-slate-800">${o.customerName} (${o.customerPhone})</p>
+                <p class="text-[11px] text-slate-500">${o.deliveryAddress}</p>
+                <p class="text-[11px] font-bold text-brand-pink mt-0.5">Total: ৳ ${Number(o.totalAmount).toLocaleString()} (${o.items?.length || 0} items)</p>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="updateOrderStatus('${d.id}', 'Delivered')" class="text-xs bg-emerald-600 text-white px-3 py-1.5 rounded-lg font-bold hover:bg-emerald-700">Mark Delivered</button>
-                <button onclick="updateOrderStatus('${d.id}', 'Cancelled')" class="text-xs bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-bold hover:bg-slate-300">Cancel</button>
+                <button onclick="updateOrderStatus('${d.id}', 'Delivered')" class="text-xs bg-emerald-600 text-white px-2.5 py-1 rounded-lg font-bold hover:bg-emerald-700">Mark Delivered</button>
+                <button onclick="updateOrderStatus('${d.id}', 'Cancelled')" class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-lg font-bold hover:bg-slate-300">Cancel</button>
               </div>
             </div>
           `;
