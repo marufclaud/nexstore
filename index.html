@@ -124,11 +124,9 @@
     </div>
   </header>
 
-  <!-- ৩. হিরো সেকশন (স্লিক ব্যানার) -->
+  <!-- ৩. হিরো সেকশন -->
   <section class="max-w-7xl mx-auto px-4 mt-5">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-      
-      <!-- মেইন স্লাইডার ব্যানার -->
       <div class="lg:col-span-8 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white rounded-2xl p-6 md:p-10 flex flex-col justify-between shadow-lg relative overflow-hidden min-h-[300px]">
         <div class="relative z-10 max-w-md">
           <span class="inline-flex items-center gap-1 bg-brand-pink/90 backdrop-blur-sm text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3">
@@ -147,7 +145,6 @@
              class="hidden sm:block absolute -right-6 bottom-0 w-80 h-64 object-contain drop-shadow-2xl" />
       </div>
 
-      <!-- ডান পাশের অফার ব্যানার -->
       <div class="lg:col-span-4 bg-gradient-to-br from-rose-600 to-pink-700 rounded-2xl p-6 text-white flex flex-col justify-between shadow-lg relative overflow-hidden">
         <div>
           <span class="bg-white/20 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider">Welcome Offer</span>
@@ -166,7 +163,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -214,8 +210,6 @@
 
   <!-- ৫. লাইভ প্রোডাক্ট সেকশন -->
   <main id="productsSection" class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
-    
-    <!-- ফিল্টার ও হেডার বার -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6 pb-3 border-b border-slate-200">
       <div>
         <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
@@ -303,7 +297,7 @@
     </div>
   </div>
 
-  <!-- ৮. সিকিউর অ্যাডমিন ড্যাশবোর্ড -->
+  <!-- ৮. সিকিউর অ্যাডমিন ড্যাশবোর্ড (ছবি আপলোড ও URL সাপোর্টসহ) -->
   <div id="adminModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
       <!-- হেডার -->
@@ -362,10 +356,48 @@
                 <input id="pOriginalPrice" type="number" placeholder="62000" class="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-pink" />
               </div>
             </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Image URL</label>
-              <input id="pImage" type="url" required placeholder="https://images.unsplash.com/photo-..." class="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-pink" />
+
+            <!-- ছবি নির্বাচন (ফাইল আপলোড বা URL) -->
+            <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50/50">
+              <div class="flex items-center justify-between mb-2">
+                <label class="block text-xs font-bold text-slate-700">Product Image (ছবি যোগ করুন)</label>
+                <!-- মোড টগল বাটন -->
+                <div class="flex gap-1 bg-slate-200/70 p-1 rounded-lg">
+                  <button type="button" onclick="setImageMode('file')" id="modeFileBtn" class="text-[11px] font-bold px-2.5 py-1 rounded-md bg-white text-slate-900 shadow-sm transition flex items-center gap-1">
+                    <i data-lucide="upload" class="w-3 h-3"></i> Device Upload
+                  </button>
+                  <button type="button" onclick="setImageMode('url')" id="modeUrlBtn" class="text-[11px] font-bold px-2.5 py-1 rounded-md text-slate-600 transition flex items-center gap-1">
+                    <i data-lucide="link" class="w-3 h-3"></i> Image URL
+                  </button>
+                </div>
+              </div>
+
+              <!-- ১. সরাসরি ডিভাইস ফাইল আপলোড বক্স -->
+              <div id="fileUploadContainer" class="border-2 border-dashed border-slate-300 hover:border-brand-pink rounded-xl p-5 text-center cursor-pointer transition bg-white relative">
+                <input id="pImageFile" type="file" accept="image/*" onchange="previewSelectedFile(event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
+                <div id="fileUploadPrompt" class="flex flex-col items-center justify-center">
+                  <i data-lucide="image-plus" class="w-8 h-8 text-brand-pink mb-1.5"></i>
+                  <p class="text-xs font-bold text-slate-800">Click to choose image from PC or Mobile</p>
+                  <p class="text-[10px] text-slate-400 mt-0.5">JPG, PNG, WebP auto-compressed & saved</p>
+                </div>
+              </div>
+
+              <!-- ২. ইমেজ URL ইনপুট বক্স -->
+              <div id="urlUploadContainer" class="hidden">
+                <input id="pImage" type="url" oninput="previewUrlImage(this.value)" placeholder="https://images.unsplash.com/photo-..." class="w-full border rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-brand-pink" />
+              </div>
+
+              <!-- ৩. ছবির লাইভ প্রিভিউ -->
+              <div id="imagePreviewContainer" class="hidden mt-3 flex items-center gap-3 p-2.5 bg-white rounded-xl border border-slate-200 shadow-sm">
+                <img id="imagePreview" src="" class="w-14 h-14 object-contain rounded-lg border bg-slate-50 p-1" />
+                <div class="flex-1">
+                  <p class="text-xs font-bold text-slate-800">Image Selected</p>
+                  <p id="imagePreviewInfo" class="text-[10px] text-emerald-600 font-semibold">Ready to upload</p>
+                </div>
+                <button type="button" onclick="clearSelectedImage()" class="text-xs text-red-500 hover:underline font-bold px-2 py-1">Remove</button>
+              </div>
             </div>
+
             <button type="submit" id="addProductBtn" class="bg-brand-pink hover:bg-brand-hoverPink text-white font-bold px-6 py-2.5 rounded-xl text-sm transition shadow-md">
               Publish to Storefront
             </button>
@@ -385,7 +417,7 @@
     </div>
   </div>
 
-  <!-- ৯. প্রফেশনাল মাল্টি-কলাম ফুটার -->
+  <!-- ৯. প্রফেশনাল ফুটার -->
   <footer class="bg-slate-900 text-slate-400 text-xs mt-16 pt-12 pb-8 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
       <div>
@@ -427,7 +459,7 @@
     </div>
   </footer>
 
-  <!-- ফায়ারবেস কোড -->
+  <!-- ফায়ারবেস স্ক্রিপ্ট -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -454,6 +486,7 @@
     let products = [];
     let cart = [];
     let currentCategory = 'All';
+    let currentFinalImage = ''; // আপলোডের চূড়ান্ত ছবি
 
     // ১. অথেনটিকেশন লিসেনার
     onAuthStateChanged(auth, (user) => {
@@ -625,7 +658,7 @@
       lucide.createIcons();
     };
 
-    // ৪. চেকআউট ও অর্ডার সাবমিট
+    // ৪. চেকআউট
     window.openCheckoutModal = () => {
       if (cart.length === 0) return alert("Please add an item to cart first!");
       if (!currentUser) {
@@ -675,10 +708,88 @@
       }
     };
 
-    // ৫. অ্যাডমিন প্যানেল লজিক
+    // ৫. অ্যাডমিন প্যানেল এবং ইমেজ হ্যান্ডলিং
     window.toggleAdminPanel = () => {
       document.getElementById("adminModal").classList.toggle("hidden");
       lucide.createIcons();
+    };
+
+    window.setImageMode = (mode) => {
+      const fileBtn = document.getElementById("modeFileBtn");
+      const urlBtn = document.getElementById("modeUrlBtn");
+      const fileContainer = document.getElementById("fileUploadContainer");
+      const urlContainer = document.getElementById("urlUploadContainer");
+
+      if (mode === 'file') {
+        fileBtn.className = "text-[11px] font-bold px-2.5 py-1 rounded-md bg-white text-slate-900 shadow-sm transition flex items-center gap-1";
+        urlBtn.className = "text-[11px] font-bold px-2.5 py-1 rounded-md text-slate-600 transition flex items-center gap-1";
+        fileContainer.classList.remove("hidden");
+        urlContainer.classList.add("hidden");
+      } else {
+        urlBtn.className = "text-[11px] font-bold px-2.5 py-1 rounded-md bg-white text-slate-900 shadow-sm transition flex items-center gap-1";
+        fileBtn.className = "text-[11px] font-bold px-2.5 py-1 rounded-md text-slate-600 transition flex items-center gap-1";
+        urlContainer.classList.remove("hidden");
+        fileContainer.classList.add("hidden");
+      }
+      lucide.createIcons();
+    };
+
+    // ডিভাইস থেকে ছবি রিড ও অপটিমাইজ
+    window.previewSelectedFile = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          // ক্যানভাসে ছবিকে অপটিমাইজ করে সাইজ কমানো (যাতে লোডিং সুপার ফাস্ট হয়)
+          const canvas = document.createElement("canvas");
+          const maxDim = 800;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height && width > maxDim) {
+            height *= maxDim / width;
+            width = maxDim;
+          } else if (height > maxDim) {
+            width *= maxDim / height;
+            height = maxDim;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // বেস৬৪ ইমেজ
+          currentFinalImage = canvas.toDataURL("image/jpeg", 0.85);
+
+          // প্রিভিউ দেখানো
+          document.getElementById("imagePreview").src = currentFinalImage;
+          document.getElementById("imagePreviewInfo").innerText = `${file.name} (Ready)`;
+          document.getElementById("imagePreviewContainer").classList.remove("hidden");
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.previewUrlImage = (url) => {
+      if (url.trim().length > 5) {
+        currentFinalImage = url.trim();
+        document.getElementById("imagePreview").src = currentFinalImage;
+        document.getElementById("imagePreviewInfo").innerText = "Web URL Ready";
+        document.getElementById("imagePreviewContainer").classList.remove("hidden");
+      }
+    };
+
+    window.clearSelectedImage = () => {
+      currentFinalImage = '';
+      document.getElementById("pImageFile").value = '';
+      const pImage = document.getElementById("pImage");
+      if (pImage) pImage.value = '';
+      document.getElementById("imagePreviewContainer").classList.add("hidden");
     };
 
     window.switchAdminTab = (tab) => {
@@ -705,6 +816,10 @@
 
     window.adminAddProduct = async (e) => {
       e.preventDefault();
+      if (!currentFinalImage) {
+        return alert("Please select an image file or enter an image URL first!");
+      }
+
       const btn = document.getElementById("addProductBtn");
       btn.disabled = true;
       btn.innerText = "Uploading...";
@@ -715,13 +830,14 @@
           category: document.getElementById("pCategory").value,
           price: Number(document.getElementById("pPrice").value),
           originalPrice: Number(document.getElementById("pOriginalPrice").value) || null,
-          image: document.getElementById("pImage").value,
+          image: currentFinalImage,
           createdAt: serverTimestamp()
         };
 
         await addDoc(collection(db, "products"), newProduct);
-        alert("Product added successfully!");
+        alert("🎉 Product added successfully with image!");
         e.target.reset();
+        clearSelectedImage();
         toggleAdminPanel();
       } catch (err) {
         alert("Error adding product: " + err.message);
@@ -731,7 +847,6 @@
       }
     };
 
-    // ১-ক্লিকে ৮টি ডেমো প্রোডাক্ট সরাসরি ফায়ারস্টোরে লোড
     window.seedDemoProducts = async () => {
       if (!confirm("Are you sure you want to add 8 premium demo products to your database?")) return;
       const btn = document.getElementById("seedBtn");
