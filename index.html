@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Website Favicon & Web App Icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23e6005c'/%3E%3Cstop offset='50%25' stop-color='%23f43f5e'/%3E%3Cstop offset='100%25' stop-color='%23f59e0b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Cpath d='M30 72V28l26 30V28h14v44H56L30 42v30z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23e6005c'/%3E%3Cstop offset='50%25' stop-color='%23f43f5e'/%3E%3Cstop offset='100%25' stop-color='%23f59e0b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Cpath d='M30 72V28l26 30V28h14v44H56L30 42v30z' fill='%23ffffff'/%3E%3C/svg%3E">
   <title>NexStore Fashion: Premium Clothing & Lifestyle</title>
   
   <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
@@ -12,11 +15,11 @@
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Lucide Icons (CDN with fallback) -->
+  <!-- Lucide Icons CDN with defer -->
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
   <style>
-    /* মোবাইলে হরিজন্টাল স্ক্রোলবার লুকানোর জন্য */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
@@ -45,7 +48,7 @@
 </head>
 <body class="bg-[#f8f9fa] text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between pb-16 md:pb-0">
 
-  <!-- ১. টপ ইউটিলিটি বার (ডেস্কটপে দৃশ্যমান, মোবাইলে ক্লিন রাখার জন্য লুকানো) -->
+  <!-- ১. টপ ইউটিলিটি বার (ডেস্কটপ) -->
   <div class="bg-slate-950 text-slate-300 text-xs py-1.5 px-4 hidden md:block border-b border-slate-800">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-3">
@@ -61,29 +64,30 @@
         
         <!-- ইউজার অথেনটিকেশন -->
         <div id="authContainer" class="flex items-center gap-2 border-l border-slate-700 pl-4">
-          <button id="loginBtn" onclick="loginWithGoogle()" class="text-brand-pink hover:text-white font-bold transition flex items-center gap-1">
-            <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Sign in with Google
+          <button id="loginBtn" onclick="handleAccountClick()" class="text-brand-pink hover:text-white font-bold transition flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+            <span>Sign in with Google</span>
           </button>
-          <div id="userProfile" class="hidden flex items-center gap-2">
+          <div id="userProfile" class="hidden flex items-center gap-2 cursor-pointer" onclick="openAccountModal()">
             <img id="userAvatar" src="" class="w-5 h-5 rounded-full border border-slate-500" />
             <span id="userName" class="font-medium text-white text-xs"></span>
-            <button onclick="logout()" class="text-slate-400 hover:text-red-400 text-[11px] ml-1">Logout</button>
+            <button onclick="event.stopPropagation(); logout()" class="text-slate-400 hover:text-red-400 text-[11px] ml-1">Logout</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ২. মেইন ফ্যাশন হেডার (ডেস্কটপে সিঙ্গেল রো, মোবাইলে ২-রো রেসপনসিভ) -->
+  <!-- ২. মেইন ফ্যাশন হেডার (ডেস্কটপ ও মোবাইলে সম্পূর্ণ রেসপনসিভ) -->
   <header class="bg-white shadow-sm sticky top-0 z-40 border-b border-slate-100">
     <div class="max-w-7xl mx-auto px-4 py-2.5 md:py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-2.5 md:gap-6">
       
-      <!-- রো ১: লোগো ও মোবাইল অ্যাকশন বাটন -->
+      <!-- রো ১: লোগো ও মোবাইল বাটনস -->
       <div class="flex items-center justify-between w-full md:w-auto">
-        <!-- ব্র্যান্ড লোগো -->
         <a href="#" class="flex items-center gap-2 shrink-0">
           <span class="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-tr from-brand-pink via-rose-500 to-amber-500 text-white flex items-center justify-center shadow-md shadow-pink-500/20">
-            <i data-lucide="sparkles" class="w-4 h-4 md:w-5 md:h-5"></i>
+            <!-- Inline Sparkles Icon -->
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
           </span>
           <div>
             <span class="text-xl md:text-2xl font-black tracking-tight text-slate-900 leading-none block">Nex<span class="text-brand-pink">Fashion</span></span>
@@ -91,23 +95,23 @@
           </div>
         </a>
 
-        <!-- মোবাইল হেডার কন্ট্রোলস (শুধু মোবাইলে দৃশ্যমান) -->
+        <!-- মোবাইল হেডার কন্ট্রোলস -->
         <div class="flex items-center gap-2 md:hidden">
           <button id="adminBtnMobile" onclick="toggleAdminPanel()" class="hidden bg-slate-900 text-amber-400 p-2 rounded-lg text-xs font-bold">
-            <i data-lucide="shield" class="w-4 h-4"></i>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
           </button>
           <button onclick="toggleCart()" class="relative p-2 text-slate-700 hover:text-brand-pink">
-            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
             <span id="cartCountMobile" class="absolute -top-1 -right-1 bg-brand-pink text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center">0</span>
           </button>
         </div>
       </div>
 
-      <!-- রো ২: সার্চ বার (মোবাইলে ফুল উইডথ, ডেস্কটপে সেন্টারে) -->
+      <!-- রো ২: সার্চ বার -->
       <div class="w-full md:flex-1 md:max-w-2xl relative">
         <div class="flex border-2 border-slate-200 rounded-xl overflow-hidden focus-within:border-brand-pink transition shadow-sm bg-white">
-          <div class="pl-3 flex items-center pointer-events-none text-slate-400">
-            <i data-lucide="search" class="w-4 h-4"></i>
+          <div class="pl-3.5 flex items-center pointer-events-none text-slate-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           </div>
           <input id="searchInput" onkeyup="filterProducts()" type="text" placeholder="Search for Panjabi, Sarees, Dresses, Footwear..." 
                  class="w-full px-2.5 py-1.5 md:py-2 text-xs md:text-sm text-slate-700 focus:outline-none" />
@@ -117,15 +121,16 @@
         </div>
       </div>
 
-      <!-- ডেস্কটপ রাইট কন্ট্রোলস (ডেস্কটপে অপরিবর্তিত) -->
+      <!-- ডেস্কটপ রাইট কন্ট্রোলস -->
       <div class="hidden md:flex items-center gap-4 shrink-0">
         <button id="adminBtn" onclick="toggleAdminPanel()" class="hidden bg-slate-900 hover:bg-black text-white text-xs font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 shadow transition">
-          <i data-lucide="shield" class="w-4 h-4 text-amber-400"></i> Admin Panel
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          <span>Admin Panel</span>
         </button>
 
         <button onclick="toggleCart()" class="relative p-2 text-slate-700 hover:text-brand-pink transition flex items-center gap-2">
           <div class="relative">
-            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
             <span id="cartCount" class="absolute -top-1.5 -right-2 bg-brand-pink text-white text-[11px] font-black rounded-full w-5 h-5 flex items-center justify-center shadow">0</span>
           </div>
           <div class="text-left leading-tight">
@@ -137,12 +142,13 @@
 
     </div>
 
-    <!-- ক্যাটাগরি সাব-নেভিগেশন বার (মোবাইলে টাচ স্ক্রোলিং, ডেস্কটপে আগের মতো) -->
+    <!-- ক্যাটাগরি সাব-নেভিগেশন -->
     <div class="border-t border-slate-100 bg-white">
       <div class="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs font-semibold text-slate-600 py-2.5 overflow-x-auto no-scrollbar whitespace-nowrap gap-4">
         <div class="flex items-center gap-3 md:gap-6">
           <button onclick="filterCategory('All')" id="catBtnAll" class="text-brand-pink font-bold flex items-center gap-1 bg-pink-50 px-3 py-1 rounded-full shrink-0">
-            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> All Fashion
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            <span>All Fashion</span>
           </button>
           <button onclick="filterCategory('Men Collection')" class="hover:text-brand-pink transition shrink-0">Men's Apparel</button>
           <button onclick="filterCategory('Women Collection')" class="hover:text-brand-pink transition shrink-0">Women's Collection</button>
@@ -151,17 +157,18 @@
           <button onclick="filterCategory('Bags & Leather')" class="hover:text-brand-pink transition shrink-0">Leather Bags</button>
         </div>
         <div class="hidden lg:flex items-center gap-1 text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full font-bold shrink-0">
-          <i data-lucide="flame" class="w-3.5 h-3.5"></i> Autumn/Winter Arrivals 2026
+          <span>🔥</span>
+          <span>Autumn/Winter Arrivals 2026</span>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- ৩. ফুল এইচডি ফ্যাশন হিরো সেকশন -->
+  <!-- ৩. হিরো সেকশন -->
   <section class="max-w-7xl mx-auto px-4 mt-3 md:mt-5">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 md:gap-4">
       
-      <!-- মেইন ফ্যাশন ব্যানার -->
+      <!-- মেইন ফ্যাশন ব্যানার (~65%) -->
       <div class="lg:col-span-8 rounded-2xl p-6 sm:p-8 md:p-12 flex flex-col justify-between shadow-xl relative overflow-hidden min-h-[300px] md:min-h-[380px] bg-slate-900 border border-slate-800">
         <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&q=85" alt="High Fashion Model" 
              class="absolute inset-0 w-full h-full object-cover object-center opacity-40 mix-blend-luminosity hover:scale-105 transition duration-700" />
@@ -169,7 +176,7 @@
 
         <div class="relative z-10 max-w-lg">
           <span class="inline-flex items-center gap-1.5 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] md:text-[10px] font-black px-2.5 py-0.5 md:px-3 md:py-1 rounded-full uppercase tracking-widest mb-2.5 md:mb-3 backdrop-blur-sm">
-            <i data-lucide="crown" class="w-3 h-3"></i> Autumn / Winter 2026
+            <span>👑</span> Autumn / Winter 2026
           </span>
           <h1 class="text-2xl sm:text-3xl md:text-5xl font-serif font-black leading-tight text-white tracking-tight">
             Elegance <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-pink-400 to-amber-300">Redefined.</span>
@@ -192,7 +199,7 @@
         </div>
       </div>
 
-      <!-- ডান পাশের VIP Fashion Pass ভাউচার কার্ড (আপনার পছন্দের কার্ড) -->
+      <!-- ডান পাশের VIP Fashion Pass ভাউচার কার্ড -->
       <div class="lg:col-span-4 bg-gradient-to-br from-rose-700 via-pink-700 to-amber-700 rounded-2xl p-5 sm:p-6 md:p-7 text-white flex flex-col justify-between shadow-xl relative overflow-hidden min-h-[260px] md:min-h-[380px]">
         <div class="relative z-10">
           <span class="bg-white/20 backdrop-blur-md text-white text-[9px] md:text-[10px] font-black px-2.5 py-0.5 md:py-1 rounded-full uppercase tracking-wider inline-block">
@@ -206,7 +213,6 @@
           </p>
         </div>
 
-        <!-- ইনার ভাউচার টিকেট -->
         <div class="relative z-10 bg-white/95 backdrop-blur-md rounded-xl md:rounded-2xl p-3 md:p-4 text-slate-800 mt-4 md:mt-6 shadow flex items-center gap-3">
           <div class="w-12 md:w-14 h-12 md:h-14 bg-slate-950 text-white rounded-lg md:rounded-xl flex flex-col items-center justify-center font-mono text-[9px] md:text-[10px] font-bold leading-tight shrink-0">
             <span class="text-[7px] md:text-[8px] text-slate-400 uppercase tracking-widest font-sans">PROMO</span>
@@ -222,49 +228,53 @@
     </div>
   </section>
 
-  <!-- ৪. ফ্যাশন ট্রাস্ট ফিচার বার (৪ কলাম) -->
+  <!-- ৪. ফ্যাশন ট্রাস্ট ফিচার বার (ইনলাইন এসভিজি সহ) -->
   <section class="max-w-7xl mx-auto px-4 mt-4 md:mt-6">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+      <!-- আইটেম ১: 100% Fabrics -->
       <div class="bg-white p-2.5 sm:p-3.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2.5">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
-          <i data-lucide="award" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
         </div>
         <div>
           <h4 class="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">100% Fabrics</h4>
           <p class="text-[9px] sm:text-[11px] text-slate-500">Cotton, Silk & Leather</p>
         </div>
       </div>
+      <!-- আইটেম ২: 7-Day Exchange -->
       <div class="bg-white p-2.5 sm:p-3.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2.5">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
-          <i data-lucide="refresh-cw" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.033 8.033 0 01-15.357-2m15.357 2H15"></path></svg>
         </div>
         <div>
           <h4 class="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">7-Day Exchange</h4>
           <p class="text-[9px] sm:text-[11px] text-slate-500">Hassle-free Fitting</p>
         </div>
       </div>
+      <!-- আইটেম ৩: Cash on Delivery -->
       <div class="bg-white p-2.5 sm:p-3.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2.5">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
-          <i data-lucide="credit-card" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
         </div>
         <div>
           <h4 class="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">Cash on Delivery</h4>
           <p class="text-[9px] sm:text-[11px] text-slate-500">Inspect & Try First</p>
         </div>
       </div>
+      <!-- আইটেম ৪: Fast Delivery -->
       <div class="bg-white p-2.5 sm:p-3.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2.5">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
-          <i data-lucide="truck" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path></svg>
         </div>
         <div>
-          <h4 class="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">Express Delivery</h4>
-          <p class="text-[9px] sm:text-[11px] text-slate-500">24 Hours in Dhaka</p>
+          <h4 class="text-[11px] sm:text-xs font-bold text-slate-900 leading-tight">Fast Delivery</h4>
+          <p class="text-[9px] sm:text-[11px] text-slate-500">24-48 Hours</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ৫. লাইভ ফ্যাশন ক্যাটালগ -->
+  <!-- ৫. লাইভ ক্যাটালগ -->
   <main id="productsSection" class="max-w-7xl mx-auto px-4 py-6 md:py-8 flex-1 w-full">
     <div class="flex justify-between items-center mb-4 md:mb-6 pb-2 md:pb-3 border-b border-slate-200">
       <div>
@@ -272,32 +282,67 @@
           <span class="w-2 md:w-2.5 h-5 md:h-6 bg-brand-pink rounded-full inline-block"></span>
           Curated Fashion Outfits
         </h2>
-        <p class="text-[10px] sm:text-xs text-slate-500 mt-0.5">Designer clothing, luxury footwear & lifestyle essentials</p>
+        <p class="text-[10px] sm:text-xs text-slate-500 mt-0.5">Designer clothing & lifestyle essentials</p>
       </div>
       <span id="productTotalCount" class="text-[10px] sm:text-xs font-semibold bg-slate-100 px-2.5 py-1 rounded-full text-slate-600">Loading...</span>
     </div>
 
-    <!-- লোডিং স্টেট -->
-    <div id="loadingIndicator" class="text-center py-16">
+    <!-- লোডিং স্টেট (স্বয়ংক্রিয়ভাবে বন্ধ হবে) -->
+    <div id="loadingIndicator" class="text-center py-12">
       <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-brand-pink border-t-transparent"></div>
-      <p class="text-xs text-slate-500 font-medium mt-2">Fetching Latest Arrivals...</p>
+      <p class="text-xs text-slate-500 font-medium mt-2">Loading Outfits...</p>
     </div>
 
-    <!-- প্রোডাক্ট গ্রিড (মোবাইলে ২ কলাম, বড় স্ক্রিনে ৪/৫ কলাম) -->
+    <!-- ২-কলাম মোবাইল / ৪-৫ কলাম ডেক্সটপ গ্রিড -->
     <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4"></div>
   </main>
 
-  <!-- ৬. কার্ট ড্রয়ার -->
+  <!-- ৬. সাইজ ও কালার সিলেকশন পপআপ -->
+  <div id="selectionModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white rounded-t-3xl sm:rounded-2xl max-w-md w-full p-5 shadow-2xl">
+      <div class="flex justify-between items-start border-b pb-3">
+        <div class="flex items-center gap-3">
+          <img id="modalProductImg" src="" class="w-14 h-16 object-cover rounded-lg border bg-slate-50" />
+          <div>
+            <h4 id="modalProductTitle" class="font-bold text-xs text-slate-900 line-clamp-1"></h4>
+            <p id="modalProductPrice" class="text-sm font-black text-brand-pink mt-0.5"></p>
+          </div>
+        </div>
+        <button onclick="closeSelectionModal()" class="text-slate-400 hover:text-red-500 p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="py-4 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-800 mb-2">Select Size (সাইজ নির্বাচন করুন):</label>
+          <div id="sizeOptionsContainer" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-800 mb-2">Select Color (রং নির্বাচন করুন):</label>
+          <div id="colorOptionsContainer" class="flex flex-wrap gap-2"></div>
+        </div>
+      </div>
+
+      <button onclick="confirmAddToCart()" class="w-full bg-brand-pink hover:bg-brand-hoverPink text-white font-bold py-3 rounded-xl transition shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2 text-xs">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+        <span>Add to Wardrobe Bag</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ৭. কার্ট ড্রয়ার -->
   <div id="cartDrawer" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-end">
     <div class="bg-white w-full max-w-md h-full p-4 sm:p-6 flex flex-col justify-between shadow-2xl">
       <div>
         <div class="flex justify-between items-center border-b pb-3">
           <div class="flex items-center gap-2">
-            <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-pink"></i>
+            <svg class="w-5 h-5 text-brand-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
             <h3 class="text-sm sm:text-base font-bold text-slate-900">Your Wardrobe Cart</h3>
           </div>
           <button onclick="toggleCart()" class="text-slate-400 hover:text-red-500 p-1">
-            <i data-lucide="x" class="w-5 h-5"></i>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>
         </div>
         <div id="cartItems" class="divide-y overflow-y-auto max-h-[50vh] mt-2"></div>
@@ -320,30 +365,32 @@
             <span id="discountAmount">-৳ 0</span>
           </div>
           <div class="flex justify-between text-sm sm:text-base font-black text-slate-900 border-t pt-1.5">
-            <span>Final Total:</span>
+            <span>Estimated Total:</span>
             <span id="cartTotal">৳ 0</span>
           </div>
         </div>
 
         <button onclick="openCheckoutModal()" class="w-full bg-brand-pink hover:bg-brand-hoverPink text-white font-bold py-2.5 sm:py-3 rounded-xl transition shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2 text-xs sm:text-sm">
-          Proceed to Order <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          <span>Proceed to Order</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- ৭. চেকআউট মডাল -->
+  <!-- ৮. চেকআউট মডাল (ঢাকার ভিতরে ৬০৳ / ঢাকার বাইরে ১৩০৳) -->
   <div id="checkoutModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
       <div class="flex justify-between items-center border-b pb-3">
         <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-1.5">
-          <i data-lucide="map-pin" class="w-4 h-4 text-brand-pink"></i> Delivery Address
+          <svg class="w-4 h-4 text-brand-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          <span>Delivery Details & Checkout</span>
         </h3>
         <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-red-500 p-1">
-          <i data-lucide="x" class="w-5 h-5"></i>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
-      <form onsubmit="submitOrder(event)" class="space-y-3 mt-3">
+      <form onsubmit="submitOrder(event)" class="space-y-3.5 mt-3">
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">Customer Full Name</label>
           <input id="orderName" type="text" required class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-pink" />
@@ -356,32 +403,158 @@
           <label class="block text-xs font-semibold text-slate-700 mb-1">Full Delivery Address</label>
           <textarea id="orderAddress" rows="2" required placeholder="House #, Road #, Area, District" class="w-full border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-pink"></textarea>
         </div>
-        <div class="bg-slate-50 p-2.5 rounded-xl border text-[11px] text-slate-600">
-          <p class="font-bold text-slate-900 flex items-center gap-1">
-            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i> Cash on Delivery (COD)
-          </p>
-          <p class="mt-0.5">Inspect size/fabric before making payment.</p>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-800 mb-1.5">Delivery Zone (ডেলিভারি এরিয়া বাছাই করুন):</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="setDeliveryZone('dhaka_inside')" id="zoneDhakaInside" class="p-2.5 border-2 border-brand-pink bg-pink-50 rounded-xl text-left transition flex flex-col justify-between">
+              <span class="text-xs font-bold text-slate-900 flex items-center gap-1">🏢 ঢাকার ভিতরে</span>
+              <span class="text-xs font-black text-brand-pink mt-1">৳ ৬০</span>
+            </button>
+            <button type="button" onclick="setDeliveryZone('dhaka_outside')" id="zoneDhakaOutside" class="p-2.5 border-2 border-slate-200 bg-white rounded-xl text-left transition flex flex-col justify-between">
+              <span class="text-xs font-bold text-slate-700 flex items-center gap-1">🚚 ঢাকার বাইরে</span>
+              <span class="text-xs font-bold text-slate-500 mt-1">৳ ১৩০</span>
+            </button>
+          </div>
         </div>
-        <button type="submit" id="orderSubmitBtn" class="w-full bg-brand-pink text-white font-bold py-2.5 rounded-xl hover:bg-brand-hoverPink transition shadow-md text-xs">
+
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs">
+          <div class="flex justify-between text-slate-600">
+            <span>Items Subtotal:</span>
+            <span id="summarySubtotal">৳ 0</span>
+          </div>
+          <div id="summaryDiscountRow" class="flex justify-between text-emerald-600 font-bold hidden">
+            <span>Voucher Discount:</span>
+            <span id="summaryDiscount">-৳ 0</span>
+          </div>
+          <div class="flex justify-between text-slate-600">
+            <span>Delivery Fee:</span>
+            <span id="summaryDeliveryFee" class="font-bold text-slate-900">৳ 60</span>
+          </div>
+          <div class="flex justify-between text-sm font-black text-slate-900 border-t pt-1.5">
+            <span>Total Payable:</span>
+            <span id="summaryFinalTotal" class="text-brand-pink text-base">৳ 0</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 p-2 rounded-xl border text-[11px] text-slate-600 flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>Cash on Delivery (পণ্য দেখে মূল্য পরিশোধ করবেন)</span>
+        </div>
+
+        <button type="submit" id="orderSubmitBtn" class="w-full bg-brand-pink text-white font-bold py-3 rounded-xl hover:bg-brand-hoverPink transition shadow-md text-xs sm:text-sm">
           Confirm Fashion Order
         </button>
       </form>
     </div>
   </div>
 
-  <!-- ৮. সিকিউর অ্যাডমিন ড্যাশবোর্ড -->
+  <!-- ৯. ইউজার অ্যাকাউন্ট মডাল -->
+  <div id="accountModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
+      
+      <!-- লগইন না থাকলে ভিউ -->
+      <div id="accountLoggedOutView" class="hidden text-center py-6">
+        <div class="w-16 h-16 bg-pink-50 text-brand-pink rounded-full flex items-center justify-center mx-auto mb-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+        </div>
+        <h3 class="font-bold text-base text-slate-900">Sign in to NexFashion</h3>
+        <p class="text-xs text-slate-500 mt-1 max-w-xs mx-auto">Access your wardrobe orders, track deliveries and get exclusive discounts.</p>
+        <button onclick="loginWithGoogle()" class="mt-5 w-full bg-brand-pink hover:bg-brand-hoverPink text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+          <span>Sign in with Google</span>
+        </button>
+        <button onclick="closeAccountModal()" class="mt-2.5 text-xs text-slate-400 hover:text-slate-600 block w-full text-center">Close</button>
+      </div>
+
+      <!-- লগইন থাকলে ড্যাশবোর্ড -->
+      <div id="accountLoggedInView" class="hidden space-y-4">
+        <div class="bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 rounded-2xl p-4 text-white flex items-center justify-between shadow-sm">
+          <div class="flex items-center gap-3">
+            <img id="accountProfileImg" src="" class="w-12 h-12 rounded-full border-2 border-white shadow" />
+            <div>
+              <h4 id="accountProfileName" class="font-black text-sm text-slate-900"></h4>
+              <p id="accountProfileEmail" class="text-[11px] text-slate-800 font-medium"></p>
+            </div>
+          </div>
+          <button onclick="closeAccountModal()" class="text-white/80 hover:text-white p-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-100 p-3.5 shadow-sm">
+          <div class="flex justify-between items-center border-b pb-2.5">
+            <h5 class="font-bold text-xs text-slate-900">My Orders (আমার অর্ডারসমূহ)</h5>
+            <span class="text-[11px] text-brand-pink font-semibold">View All &gt;</span>
+          </div>
+
+          <div class="grid grid-cols-5 gap-1 pt-3 text-center text-[10px] text-slate-600 font-medium">
+            <div class="flex flex-col items-center gap-1">
+              <span>💳</span>
+              <span>To Pay</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <span>📦</span>
+              <span>To Ship</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <span>🚚</span>
+              <span>To Receive</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <span>⭐</span>
+              <span>Review</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <span>🔄</span>
+              <span>Returns</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-100 p-3.5 shadow-sm">
+          <h5 class="font-bold text-xs text-slate-900 mb-2">Order History</h5>
+          <div id="userOrdersList" class="space-y-2 max-h-48 overflow-y-auto text-xs divide-y">
+            <p class="text-[11px] text-slate-400 py-2 text-center">No orders found.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-2 text-center text-[10px] text-slate-600 font-medium pt-1">
+          <div class="p-2 border rounded-xl flex flex-col items-center gap-1 hover:bg-slate-50 cursor-pointer">
+            <span>💬</span>
+            <span>Chat</span>
+          </div>
+          <div class="p-2 border rounded-xl flex flex-col items-center gap-1 hover:bg-slate-50 cursor-pointer">
+            <span>❓</span>
+            <span>Help</span>
+          </div>
+          <div class="p-2 border rounded-xl flex flex-col items-center gap-1 hover:bg-slate-50 cursor-pointer">
+            <span>📍</span>
+            <span>Addresses</span>
+          </div>
+          <div onclick="logout()" class="p-2 border border-red-100 bg-red-50 text-red-600 rounded-xl flex flex-col items-center gap-1 cursor-pointer">
+            <span>🚪</span>
+            <span>Logout</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ১০. সিকিউর অ্যাডমিন ড্যাশবোর্ড -->
   <div id="adminModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-3 sm:p-4">
     <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-hidden flex flex-col shadow-2xl">
       <div class="bg-slate-950 text-white px-4 sm:px-6 py-3.5 flex justify-between items-center">
         <div class="flex items-center gap-2">
-          <i data-lucide="shield-check" class="w-5 h-5 text-amber-400"></i>
+          <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
           <div>
             <h3 class="font-bold text-xs sm:text-sm">NexStore Fashion Manager</h3>
             <p class="text-[10px] text-slate-400">marufclaud@gmail.com</p>
           </div>
         </div>
         <button onclick="toggleAdminPanel()" class="text-slate-400 hover:text-white p-1">
-          <i data-lucide="x" class="w-5 h-5"></i>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
 
@@ -424,7 +597,17 @@
               </div>
             </div>
 
-            <!-- ছবি নির্বাচন -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Available Sizes:</label>
+                <input id="pSizes" type="text" value="M, L, XL, XXL" placeholder="M, L, XL, XXL" class="w-full border rounded-lg px-2.5 py-1.5 text-xs bg-white focus:outline-none focus:border-brand-pink" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Available Colors:</label>
+                <input id="pColors" type="text" value="Black, Navy, Olive, Maroon" placeholder="Black, Navy, Olive" class="w-full border rounded-lg px-2.5 py-1.5 text-xs bg-white focus:outline-none focus:border-brand-pink" />
+              </div>
+            </div>
+
             <div class="border border-slate-200 rounded-xl p-3 bg-slate-50/50">
               <div class="flex items-center justify-between mb-2">
                 <label class="block text-xs font-bold text-slate-700">Outfit Photo (ছবি)</label>
@@ -441,7 +624,7 @@
               <div id="fileUploadContainer" class="border-2 border-dashed border-slate-300 hover:border-brand-pink rounded-xl p-4 text-center cursor-pointer transition bg-white relative">
                 <input id="pImageFile" type="file" accept="image/*" onchange="previewSelectedFile(event)" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
                 <div id="fileUploadPrompt" class="flex flex-col items-center justify-center">
-                  <i data-lucide="image-plus" class="w-6 h-6 text-brand-pink mb-1"></i>
+                  <svg class="w-6 h-6 text-brand-pink mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                   <p class="text-xs font-bold text-slate-800">Select photo from PC or Phone</p>
                 </div>
               </div>
@@ -476,28 +659,28 @@
     </div>
   </div>
 
-  <!-- ৯. মোবাইল স্টিকি বটম অ্যাপ বার -->
+  <!-- ১১. মোবাইল বটম অ্যাপ বার (ইনলাইন এসভিজি সহ) -->
   <div class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 md:hidden py-1.5 px-6 flex justify-between items-center shadow-lg text-slate-600 text-[10px] font-bold">
     <a href="#" class="flex flex-col items-center gap-0.5 text-brand-pink">
-      <i data-lucide="home" class="w-4 h-4"></i>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
       <span>Home</span>
     </a>
     <a href="#productsSection" class="flex flex-col items-center gap-0.5 hover:text-brand-pink">
-      <i data-lucide="grid" class="w-4 h-4"></i>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
       <span>Catalog</span>
     </a>
     <button onclick="toggleCart()" class="flex flex-col items-center gap-0.5 hover:text-brand-pink relative">
-      <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
       <span id="mobileBottomCartBadge" class="absolute -top-1 -right-2 bg-brand-pink text-white text-[9px] rounded-full w-3.5 h-3.5 flex items-center justify-center">0</span>
       <span>Bag</span>
     </button>
-    <button onclick="loginWithGoogle()" class="flex flex-col items-center gap-0.5 hover:text-brand-pink">
-      <i data-lucide="user" class="w-4 h-4"></i>
+    <button onclick="handleAccountClick()" class="flex flex-col items-center gap-0.5 hover:text-brand-pink">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
       <span>Account</span>
     </button>
   </div>
 
-  <!-- ১০. ফুটার -->
+  <!-- ১২. ফুটার -->
   <footer class="bg-slate-950 text-slate-400 text-xs mt-12 pt-8 md:pt-12 pb-6 md:pb-8 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8">
       <div>
@@ -540,7 +723,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, onSnapshot, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCegw-R2U9toPFdr3YD1MoWRU3qbHmcMs4",
@@ -552,84 +735,138 @@
       measurementId: "G-HWZWMV0VS9"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
+    let app, auth, db, provider;
+    try {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+      provider = new GoogleAuthProvider();
+    } catch (e) {
+      console.warn("Firebase initialization notice:", e);
+    }
 
     const ADMIN_EMAIL = "marufclaud@gmail.com";
 
+    // ফলব্যাক পোশাক ক্যাটালগ (যাতে কোনো অবস্থাতেই সাইট লোডিং-এ আটকে না থাকে)
+    const fallbackProducts = [
+      {
+        id: "p_sample_1",
+        title: "Bespoke Royal Charcoal Wool Semi-Formal Blazer",
+        category: "Men Collection",
+        price: 6800,
+        originalPrice: 8500,
+        sizes: "M, L, XL, XXL",
+        colors: "Charcoal Black, Navy Blue, Ash Gray",
+        image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&q=80"
+      },
+      {
+        id: "p_sample_2",
+        title: "Handcrafted Crimson Mulberry Silk Festive Saree",
+        category: "Women Collection",
+        price: 12500,
+        originalPrice: 14800,
+        sizes: "Free Size",
+        colors: "Crimson Red, Royal Magenta, Emerald Green",
+        image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&q=80"
+      },
+      {
+        id: "p_sample_3",
+        title: "Hand-Stitched Genuine Calfskin Leather Chelsea Boots",
+        category: "Footwear",
+        price: 7200,
+        originalPrice: 8900,
+        sizes: "40, 41, 42, 43, 44",
+        colors: "Tan Brown, Jet Black",
+        image: "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=600&q=80"
+      },
+      {
+        id: "p_sample_4",
+        title: "Tailored Egyptian Cotton White Formal Dress Shirt",
+        category: "Men Collection",
+        price: 2450,
+        originalPrice: 3100,
+        sizes: "M, L, XL, XXL",
+        colors: "Pure White, Sky Blue, Soft Pink",
+        image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&q=80"
+      },
+      {
+        id: "p_sample_5",
+        title: "Minimalist Italian Vegetable Tanned Leather Tote Bag",
+        category: "Bags & Leather",
+        price: 5200,
+        originalPrice: 6500,
+        sizes: "Standard",
+        colors: "Vintage Tan, Classic Black",
+        image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=80"
+      },
+      {
+        id: "p_sample_6",
+        title: "Swiss Automatic Chronograph Rose Gold Luxury Timepiece",
+        category: "Watches & Accessories",
+        price: 16500,
+        originalPrice: 19500,
+        sizes: "42mm Dial",
+        colors: "Rose Gold, Silver Steel",
+        image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600&q=80"
+      },
+      {
+        id: "p_sample_7",
+        title: "Vintage Aviator Sunglasses with Gold Tone Rim",
+        category: "Watches & Accessories",
+        price: 2800,
+        originalPrice: 3500,
+        sizes: "Standard",
+        colors: "Gold Green, Black Polarized",
+        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&q=80"
+      },
+      {
+        id: "p_sample_8",
+        title: "Hand-Embroidered Pastel Chiffon Designer Kurti",
+        category: "Women Collection",
+        price: 3400,
+        originalPrice: 4200,
+        sizes: "S, M, L, XL",
+        colors: "Peach Pink, Mint Green, Lilac",
+        image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&q=80"
+      }
+    ];
+
     let currentUser = null;
-    let products = [];
+    let products = [...fallbackProducts];
     let cart = [];
     let currentCategory = 'All';
     let currentFinalImage = '';
     let appliedDiscount = 0;
+    let deliveryCharge = 60; // ডিফল্ট ঢাকার ভিতরে ৬০ টাকা
 
-    onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-      const loginBtn = document.getElementById("loginBtn");
-      const userProfile = document.getElementById("userProfile");
-      const adminBtn = document.getElementById("adminBtn");
-      const adminBtnMobile = document.getElementById("adminBtnMobile");
+    let selectedProductForCart = null;
+    let chosenSize = '';
+    let chosenColor = '';
 
-      if (user) {
-        loginBtn.classList.add("hidden");
-        userProfile.classList.remove("hidden");
-        document.getElementById("userAvatar").src = user.photoURL || "https://ui-avatars.com/api/?name=" + user.displayName;
-        document.getElementById("userName").innerText = user.displayName;
-
-        if (user.email === ADMIN_EMAIL) {
-          adminBtn.classList.remove("hidden");
-          adminBtnMobile.classList.remove("hidden");
-        } else {
-          adminBtn.classList.add("hidden");
-          adminBtnMobile.classList.add("hidden");
-        }
-      } else {
-        loginBtn.classList.remove("hidden");
-        userProfile.classList.add("hidden");
-        adminBtn.classList.add("hidden");
-        adminBtnMobile.classList.add("hidden");
-      }
-      lucide.createIcons();
-    });
-
-    window.loginWithGoogle = async () => {
+    // আইকন হ্যান্ডলার (Lucide fallback সহ)
+    function safeCreateIcons() {
       try {
-        await signInWithPopup(auth, provider);
-      } catch (err) {
-        alert("Google Login Error: " + err.message);
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+          lucide.createIcons();
+        }
+      } catch (e) {
+        console.warn("Lucide error:", e);
       }
-    };
+    }
+    window.safeCreateIcons = safeCreateIcons;
 
-    window.logout = async () => {
-      await signOut(auth);
-    };
-
-    const productsCol = collection(db, "products");
-    onSnapshot(productsCol, (snapshot) => {
-      document.getElementById("loadingIndicator").classList.add("hidden");
-      products = [];
-      snapshot.forEach((docSnap) => {
-        products.push({ id: docSnap.id, ...docSnap.data() });
-      });
-      document.getElementById("productTotalCount").innerText = `${products.length} Available`;
-      applyFilters();
-      renderAdminManageProducts();
-    });
-
-    window.renderProducts = (items) => {
+    // পণ্য তালিকা রেন্ডার ফাংশন (হয়েস্টিং নিশ্চিত)
+    function renderProducts(items) {
       const grid = document.getElementById("productGrid");
-      if (items.length === 0) {
+      if (!grid) return;
+      if (!items || items.length === 0) {
         grid.innerHTML = `
           <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
-            <i data-lucide="package-open" class="w-10 h-10 text-slate-300 mx-auto mb-2"></i>
+            <svg class="w-10 h-10 text-slate-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
             <h4 class="font-bold text-xs sm:text-sm text-slate-700">No outfits available in this category</h4>
             <p class="text-[10px] sm:text-xs text-slate-400 mt-1">Please check another category.</p>
           </div>
         `;
-        lucide.createIcons();
         return;
       }
       grid.innerHTML = items.map(p => `
@@ -643,44 +880,34 @@
             <span class="absolute top-2 right-2 bg-emerald-100 text-emerald-800 text-[8px] sm:text-[9px] font-extrabold px-1.5 py-0.5 rounded">
               Ready
             </span>
-            <img src="${p.image}" alt="${p.title}" class="h-full w-full object-cover rounded-lg sm:rounded-xl group-hover:scale-105 transition-transform duration-500">
+            <img src="${p.image}" alt="${p.title}" class="h-full w-full object-cover rounded-lg sm:rounded-xl group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&q=80'">
           </div>
           
           <div class="p-2.5 sm:p-4 flex flex-col flex-1 justify-between">
             <div>
-              <div class="flex items-center justify-between text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">
-                <span>${p.category || 'Fashion'}</span>
-                <span class="text-amber-500">★ 4.9</span>
-              </div>
-              <h4 class="font-bold text-[11px] sm:text-xs text-slate-800 line-clamp-2 leading-snug group-hover:text-brand-pink transition" title="${p.title}">
-                ${p.title}
-              </h4>
-              <div class="mt-1.5 sm:mt-2.5 flex items-baseline gap-1.5">
-                <span class="text-xs sm:text-base font-black text-brand-pink">৳ ${Number(p.price).toLocaleString()}</span>
+              <span class="text-[9px] sm:text-[10px] uppercase font-bold text-brand-pink tracking-wider block">${p.category || 'Fashion'}</span>
+              <h3 class="font-bold text-xs sm:text-sm text-slate-900 mt-0.5 line-clamp-2 leading-tight">${p.title}</h3>
+              
+              <div class="flex items-baseline gap-1.5 mt-1.5">
+                <span class="text-xs sm:text-sm font-extrabold text-slate-900">৳ ${Number(p.price).toLocaleString()}</span>
                 ${p.originalPrice ? `<span class="text-[10px] sm:text-xs text-slate-400 line-through">৳ ${Number(p.originalPrice).toLocaleString()}</span>` : ''}
               </div>
             </div>
 
-            <button onclick="addToCart('${p.id}')" class="mt-2.5 sm:mt-3.5 w-full bg-slate-900 text-white hover:bg-brand-pink text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 rounded-lg sm:rounded-xl transition flex items-center justify-center gap-1 shadow-sm">
-              <i data-lucide="shopping-bag" class="w-3 h-3 sm:w-3.5 sm:h-3.5"></i> Add
+            <button onclick="openSelectionModal('${p.id}')" class="mt-2.5 sm:mt-3.5 w-full bg-slate-900 text-white hover:bg-brand-pink text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 rounded-lg sm:rounded-xl transition flex items-center justify-center gap-1 shadow-sm">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+              <span>Add</span>
             </button>
           </div>
         </div>
       `).join('');
-      lucide.createIcons();
-    };
+      safeCreateIcons();
+    }
+    window.renderProducts = renderProducts;
 
-    window.filterCategory = (cat) => {
-      currentCategory = cat;
-      applyFilters();
-    };
-
-    window.filterProducts = () => {
-      applyFilters();
-    };
-
+    // ফিল্টারিং ফাংশনসমূহ
     function applyFilters() {
-      const q = (document.getElementById("searchInput")?.value || "").toLowerCase();
+      const q = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
       let filtered = products;
       if (currentCategory !== 'All') {
         filtered = filtered.filter(p => p.category?.toLowerCase() === currentCategory.toLowerCase());
@@ -690,23 +917,114 @@
       }
       renderProducts(filtered);
     }
+    window.applyFilters = applyFilters;
 
-    // কার্ট সিস্টেম
-    window.addToCart = (id) => {
-      const item = products.find(p => p.id === id);
-      if (item) {
-        const existing = cart.find(c => c.id === id);
-        if (existing) {
-          existing.qty = (existing.qty || 1) + 1;
+    function filterCategory(cat) {
+      currentCategory = cat;
+      const catBtnAll = document.getElementById("catBtnAll");
+      if (catBtnAll) {
+        if (cat === 'All') {
+          catBtnAll.className = "text-brand-pink font-bold flex items-center gap-1 bg-pink-50 px-3 py-1 rounded-full shrink-0";
         } else {
-          cart.push({ ...item, qty: 1 });
+          catBtnAll.className = "hover:text-brand-pink transition shrink-0 flex items-center gap-1";
         }
-        updateCartUI();
-        toggleCart(true);
       }
-    };
+      applyFilters();
+    }
+    window.filterCategory = filterCategory;
 
-    window.changeCartQty = (index, delta) => {
+    function filterProducts() {
+      applyFilters();
+    }
+    window.filterProducts = filterProducts;
+
+    // সাইজ ও কালার নির্বাচন পপআপ
+    function openSelectionModal(id) {
+      const item = products.find(p => String(p.id) === String(id));
+      if (!item) return;
+
+      selectedProductForCart = item;
+      document.getElementById("modalProductImg").src = item.image;
+      document.getElementById("modalProductTitle").innerText = item.title;
+      document.getElementById("modalProductPrice").innerText = `৳ ${Number(item.price).toLocaleString()}`;
+
+      const sizes = item.sizes ? item.sizes.split(',').map(s => s.trim()).filter(Boolean) : ['M', 'L', 'XL', 'XXL'];
+      chosenSize = sizes[0] || 'M';
+      const sizeContainer = document.getElementById("sizeOptionsContainer");
+      sizeContainer.innerHTML = sizes.map((s, idx) => `
+        <button type="button" onclick="selectSize('${s}')" id="sizeBtn_${idx}" class="px-3 py-1.5 border rounded-lg text-xs font-bold transition ${s === chosenSize ? 'border-brand-pink bg-pink-50 text-brand-pink' : 'border-slate-200 text-slate-700'}">
+          ${s}
+        </button>
+      `).join('');
+
+      const colors = item.colors ? item.colors.split(',').map(c => c.trim()).filter(Boolean) : ['Black', 'Navy', 'Olive'];
+      chosenColor = colors[0] || 'Black';
+      const colorContainer = document.getElementById("colorOptionsContainer");
+      colorContainer.innerHTML = colors.map((c, idx) => `
+        <button type="button" onclick="selectColor('${c}')" id="colorBtn_${idx}" class="px-3 py-1.5 border rounded-lg text-xs font-bold transition ${c === chosenColor ? 'border-brand-pink bg-pink-50 text-brand-pink' : 'border-slate-200 text-slate-700'}">
+          ${c}
+        </button>
+      `).join('');
+
+      document.getElementById("selectionModal").classList.remove("hidden");
+      safeCreateIcons();
+    }
+    window.openSelectionModal = openSelectionModal;
+
+    function selectSize(s) {
+      chosenSize = s;
+      document.querySelectorAll('#sizeOptionsContainer button').forEach(b => {
+        if (b.innerText.trim() === s) {
+          b.className = "px-3 py-1.5 border-2 border-brand-pink bg-pink-50 text-brand-pink rounded-lg text-xs font-bold transition";
+        } else {
+          b.className = "px-3 py-1.5 border border-slate-200 text-slate-700 rounded-lg text-xs font-bold transition";
+        }
+      });
+    }
+    window.selectSize = selectSize;
+
+    function selectColor(c) {
+      chosenColor = c;
+      document.querySelectorAll('#colorOptionsContainer button').forEach(b => {
+        if (b.innerText.trim() === c) {
+          b.className = "px-3 py-1.5 border-2 border-brand-pink bg-pink-50 text-brand-pink rounded-lg text-xs font-bold transition";
+        } else {
+          b.className = "px-3 py-1.5 border border-slate-200 text-slate-700 rounded-lg text-xs font-bold transition";
+        }
+      });
+    }
+    window.selectColor = selectColor;
+
+    function closeSelectionModal() {
+      document.getElementById("selectionModal").classList.add("hidden");
+    }
+    window.closeSelectionModal = closeSelectionModal;
+
+    function confirmAddToCart() {
+      if (!selectedProductForCart) return;
+
+      const cartItemId = `${selectedProductForCart.id}_${chosenSize}_${chosenColor}`;
+      const existing = cart.find(c => c.cartItemId === cartItemId);
+
+      if (existing) {
+        existing.qty = (existing.qty || 1) + 1;
+      } else {
+        cart.push({
+          ...selectedProductForCart,
+          cartItemId: cartItemId,
+          size: chosenSize,
+          color: chosenColor,
+          qty: 1
+        });
+      }
+
+      closeSelectionModal();
+      updateCartUI();
+      toggleCart(true);
+    }
+    window.confirmAddToCart = confirmAddToCart;
+
+    function changeCartQty(index, delta) {
       if (cart[index]) {
         cart[index].qty = (cart[index].qty || 1) + delta;
         if (cart[index].qty <= 0) {
@@ -714,13 +1032,15 @@
         }
         updateCartUI();
       }
-    };
+    }
+    window.changeCartQty = changeCartQty;
 
-    window.applyVoucher = () => {
+    function applyVoucher() {
       const code = (document.getElementById("voucherInput").value || "").trim().toUpperCase();
       const msg = document.getElementById("voucherMsg");
       const subtotal = cart.reduce((sum, i) => sum + (Number(i.price) * (i.qty || 1)), 0);
 
+      msg.classList.remove("hidden");
       if (code === "STYLE350") {
         if (subtotal >= 2000) {
           appliedDiscount = 350;
@@ -735,37 +1055,46 @@
         msg.innerText = "Invalid voucher code.";
       }
       updateCartUI();
-    };
+    }
+    window.applyVoucher = applyVoucher;
 
-    window.updateCartUI = () => {
+    function updateCartUI() {
       const totalCount = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
-      document.getElementById("cartCount").innerText = totalCount;
-      document.getElementById("cartCountMobile").innerText = totalCount;
-      document.getElementById("mobileBottomCartBadge").innerText = totalCount;
+      const cartCount = document.getElementById("cartCount");
+      if (cartCount) cartCount.innerText = totalCount;
+      const cartCountMobile = document.getElementById("cartCountMobile");
+      if (cartCountMobile) cartCountMobile.innerText = totalCount;
+      const mobileBottomCartBadge = document.getElementById("mobileBottomCartBadge");
+      if (mobileBottomCartBadge) mobileBottomCartBadge.innerText = totalCount;
 
       const cartItems = document.getElementById("cartItems");
-
-      if (cart.length === 0) {
-        cartItems.innerHTML = '<p class="text-center text-slate-400 py-10 text-xs">Your shopping bag is empty</p>';
-        appliedDiscount = 0;
-      } else {
-        cartItems.innerHTML = cart.map((item, index) => `
-          <div class="py-2.5 flex justify-between items-center gap-2.5">
-            <img src="${item.image}" class="w-10 h-12 object-cover bg-slate-50 rounded-lg border" />
-            <div class="flex-1">
-              <p class="font-bold text-xs text-slate-800 line-clamp-1">${item.title}</p>
-              <p class="text-xs font-black text-brand-pink mt-0.5">৳ ${Number(item.price).toLocaleString()}</p>
-              <div class="flex items-center gap-2 mt-1">
-                <button onclick="changeCartQty(${index}, -1)" class="w-5 h-5 bg-slate-100 rounded text-xs font-bold hover:bg-slate-200">-</button>
-                <span class="text-xs font-semibold">${item.qty || 1}</span>
-                <button onclick="changeCartQty(${index}, 1)" class="w-5 h-5 bg-slate-100 rounded text-xs font-bold hover:bg-slate-200">+</button>
+      if (cartItems) {
+        if (cart.length === 0) {
+          cartItems.innerHTML = '<p class="text-center text-slate-400 py-10 text-xs">Your shopping bag is empty</p>';
+          appliedDiscount = 0;
+        } else {
+          cartItems.innerHTML = cart.map((item, index) => `
+            <div class="py-2.5 flex justify-between items-center gap-2.5">
+              <img src="${item.image}" class="w-10 h-12 object-cover bg-slate-50 rounded-lg border" onerror="this.src='https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&q=80'" />
+              <div class="flex-1">
+                <p class="font-bold text-xs text-slate-800 line-clamp-1">${item.title}</p>
+                <div class="flex items-center gap-2 text-[10px] text-slate-500 font-semibold mt-0.5">
+                  <span class="bg-slate-100 px-1.5 py-0.5 rounded">Size: ${item.size || 'M'}</span>
+                  <span class="bg-slate-100 px-1.5 py-0.5 rounded">Color: ${item.color || 'Black'}</span>
+                </div>
+                <p class="text-xs font-black text-brand-pink mt-1">৳ ${Number(item.price).toLocaleString()}</p>
+                <div class="flex items-center gap-2 mt-1">
+                  <button onclick="changeCartQty(${index}, -1)" class="w-5 h-5 bg-slate-100 rounded text-xs font-bold hover:bg-slate-200 flex items-center justify-center">-</button>
+                  <span class="text-xs font-semibold">${item.qty || 1}</span>
+                  <button onclick="changeCartQty(${index}, 1)" class="w-5 h-5 bg-slate-100 rounded text-xs font-bold hover:bg-slate-200 flex items-center justify-center">+</button>
+                </div>
               </div>
+              <button onclick="removeFromCart(${index})" class="text-slate-400 hover:text-red-500 p-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+              </button>
             </div>
-            <button onclick="removeFromCart(${index})" class="text-slate-400 hover:text-red-500 p-1">
-              <i data-lucide="trash-2" class="w-4 h-4"></i>
-            </button>
-          </div>
-        `).join('');
+          `).join('');
+        }
       }
 
       const subtotal = cart.reduce((sum, i) => sum + (Number(i.price) * (i.qty || 1)), 0);
@@ -773,68 +1102,134 @@
 
       const finalTotal = Math.max(0, subtotal - appliedDiscount);
 
-      document.getElementById("cartSubtotal").innerText = `৳ ${subtotal.toLocaleString()}`;
-      document.getElementById("cartTotal").innerText = `৳ ${finalTotal.toLocaleString()}`;
-      document.getElementById("cartHeaderTotal").innerText = `৳ ${finalTotal.toLocaleString()}`;
+      const cartSubtotal = document.getElementById("cartSubtotal");
+      if (cartSubtotal) cartSubtotal.innerText = `৳ ${subtotal.toLocaleString()}`;
+      const cartTotal = document.getElementById("cartTotal");
+      if (cartTotal) cartTotal.innerText = `৳ ${finalTotal.toLocaleString()}`;
+      const cartHeaderTotal = document.getElementById("cartHeaderTotal");
+      if (cartHeaderTotal) cartHeaderTotal.innerText = `৳ ${finalTotal.toLocaleString()}`;
 
       const discountRow = document.getElementById("discountRow");
-      if (appliedDiscount > 0) {
-        discountRow.classList.remove("hidden");
-        document.getElementById("discountAmount").innerText = `-৳ ${appliedDiscount}`;
-      } else {
-        discountRow.classList.add("hidden");
+      if (discountRow) {
+        if (appliedDiscount > 0) {
+          discountRow.classList.remove("hidden");
+          document.getElementById("discountAmount").innerText = `-৳ ${appliedDiscount}`;
+        } else {
+          discountRow.classList.add("hidden");
+        }
       }
 
-      lucide.createIcons();
-    };
+      safeCreateIcons();
+    }
+    window.updateCartUI = updateCartUI;
 
-    window.removeFromCart = (index) => {
+    function removeFromCart(index) {
       cart.splice(index, 1);
       updateCartUI();
-    };
+    }
+    window.removeFromCart = removeFromCart;
 
-    window.toggleCart = (forceOpen = false) => {
+    function toggleCart(forceOpen = false) {
       const drawer = document.getElementById("cartDrawer");
+      if (!drawer) return;
       if (forceOpen) drawer.classList.remove("hidden");
       else drawer.classList.toggle("hidden");
-      lucide.createIcons();
-    };
+      safeCreateIcons();
+    }
+    window.toggleCart = toggleCart;
 
-    // চেকআউট
-    window.openCheckoutModal = () => {
+    function setDeliveryZone(zone) {
+      const insideBtn = document.getElementById("zoneDhakaInside");
+      const outsideBtn = document.getElementById("zoneDhakaOutside");
+
+      if (zone === 'dhaka_inside') {
+        deliveryCharge = 60;
+        insideBtn.className = "p-2.5 border-2 border-brand-pink bg-pink-50 rounded-xl text-left transition flex flex-col justify-between";
+        outsideBtn.className = "p-2.5 border-2 border-slate-200 bg-white rounded-xl text-left transition flex flex-col justify-between";
+      } else {
+        deliveryCharge = 130;
+        outsideBtn.className = "p-2.5 border-2 border-brand-pink bg-pink-50 rounded-xl text-left transition flex flex-col justify-between";
+        insideBtn.className = "p-2.5 border-2 border-slate-200 bg-white rounded-xl text-left transition flex flex-col justify-between";
+      }
+      updateCheckoutSummary();
+    }
+    window.setDeliveryZone = setDeliveryZone;
+
+    function updateCheckoutSummary() {
+      const subtotal = cart.reduce((s, i) => s + (Number(i.price) * (i.qty || 1)), 0);
+      const discountRow = document.getElementById("summaryDiscountRow");
+      if (discountRow) {
+        if (appliedDiscount > 0) {
+          discountRow.classList.remove("hidden");
+          document.getElementById("summaryDiscount").innerText = `-৳ ${appliedDiscount}`;
+        } else {
+          discountRow.classList.add("hidden");
+        }
+      }
+
+      const summarySubtotal = document.getElementById("summarySubtotal");
+      if (summarySubtotal) summarySubtotal.innerText = `৳ ${subtotal.toLocaleString()}`;
+      const summaryDeliveryFee = document.getElementById("summaryDeliveryFee");
+      if (summaryDeliveryFee) summaryDeliveryFee.innerText = `৳ ${deliveryCharge}`;
+
+      const totalWithDelivery = Math.max(0, subtotal - appliedDiscount) + deliveryCharge;
+      const summaryFinalTotal = document.getElementById("summaryFinalTotal");
+      if (summaryFinalTotal) summaryFinalTotal.innerText = `৳ ${totalWithDelivery.toLocaleString()}`;
+    }
+    window.updateCheckoutSummary = updateCheckoutSummary;
+
+    function openCheckoutModal() {
       if (cart.length === 0) return alert("Please select an outfit to order!");
       if (!currentUser) {
-        alert("Please sign in with Google to place an order.");
-        loginWithGoogle();
+        handleAccountClick();
         return;
       }
       document.getElementById("orderName").value = currentUser.displayName || "";
       toggleCart();
+      updateCheckoutSummary();
       document.getElementById("checkoutModal").classList.remove("hidden");
-      lucide.createIcons();
-    };
+      safeCreateIcons();
+    }
+    window.openCheckoutModal = openCheckoutModal;
 
-    window.closeCheckoutModal = () => {
+    function closeCheckoutModal() {
       document.getElementById("checkoutModal").classList.add("hidden");
-    };
+    }
+    window.closeCheckoutModal = closeCheckoutModal;
 
-    window.submitOrder = async (e) => {
+    async function submitOrder(e) {
       e.preventDefault();
+      if (!currentUser) {
+        alert("Please sign in first to place your order!");
+        handleAccountClick();
+        return;
+      }
+
       const btn = document.getElementById("orderSubmitBtn");
       btn.disabled = true;
       btn.innerText = "Placing Order...";
 
       const subtotal = cart.reduce((s, i) => s + (Number(i.price) * (i.qty || 1)), 0);
-      const finalAmount = Math.max(0, subtotal - appliedDiscount);
+      const finalAmount = Math.max(0, subtotal - appliedDiscount) + deliveryCharge;
 
       try {
         const orderData = {
           userId: currentUser.uid,
-          customerEmail: currentUser.email,
+          customerEmail: currentUser.email || "",
           customerName: document.getElementById("orderName").value,
           customerPhone: document.getElementById("orderPhone").value,
           deliveryAddress: document.getElementById("orderAddress").value,
-          items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, image: i.image, qty: i.qty || 1 })),
+          deliveryZone: deliveryCharge === 60 ? "Inside Dhaka" : "Outside Dhaka",
+          deliveryCharge: deliveryCharge,
+          items: cart.map(i => ({ 
+            id: i.id, 
+            title: i.title, 
+            price: i.price, 
+            image: i.image, 
+            size: i.size || 'M',
+            color: i.color || 'Default',
+            qty: i.qty || 1 
+          })),
           subtotal: subtotal,
           discount: appliedDiscount,
           totalAmount: finalAmount,
@@ -842,7 +1237,9 @@
           createdAt: serverTimestamp()
         };
 
-        await addDoc(collection(db, "orders"), orderData);
+        if (db) {
+          await addDoc(collection(db, "orders"), orderData);
+        }
         alert("🎉 Fashion Order Placed Successfully! We will confirm and arrange delivery.");
         cart = [];
         appliedDiscount = 0;
@@ -854,15 +1251,104 @@
         btn.disabled = false;
         btn.innerText = "Confirm Fashion Order";
       }
-    };
+    }
+    window.submitOrder = submitOrder;
 
-    // অ্যাডমিন প্যানেল
-    window.toggleAdminPanel = () => {
+    async function loginWithGoogle() {
+      try {
+        if (auth && provider) {
+          await signInWithPopup(auth, provider);
+        }
+        closeAccountModal();
+      } catch (err) {
+        if (err.code !== 'auth/popup-closed-by-user') {
+          alert("Google Login: " + err.message);
+        }
+      }
+    }
+    window.loginWithGoogle = loginWithGoogle;
+
+    async function logout() {
+      if (auth) {
+        await signOut(auth);
+      }
+      closeAccountModal();
+    }
+    window.logout = logout;
+
+    function handleAccountClick() {
+      openAccountModal();
+    }
+    window.handleAccountClick = handleAccountClick;
+
+    function openAccountModal() {
+      const modal = document.getElementById("accountModal");
+      const loggedOutView = document.getElementById("accountLoggedOutView");
+      const loggedInView = document.getElementById("accountLoggedInView");
+
+      if (currentUser) {
+        loggedOutView.classList.add("hidden");
+        loggedInView.classList.remove("hidden");
+        document.getElementById("accountProfileImg").src = currentUser.photoURL || "https://ui-avatars.com/api/?name=" + encodeURIComponent(currentUser.displayName || "User");
+        document.getElementById("accountProfileName").innerText = currentUser.displayName || "User";
+        document.getElementById("accountProfileEmail").innerText = currentUser.email || "";
+        loadUserOrders(currentUser.uid);
+      } else {
+        loggedOutView.classList.remove("hidden");
+        loggedInView.classList.add("hidden");
+      }
+      modal.classList.remove("hidden");
+      safeCreateIcons();
+    }
+    window.openAccountModal = openAccountModal;
+
+    function closeAccountModal() {
+      document.getElementById("accountModal").classList.add("hidden");
+    }
+    window.closeAccountModal = closeAccountModal;
+
+    function loadUserOrders(uid) {
+      const container = document.getElementById("userOrdersList");
+      if (!container || !db) return;
+
+      try {
+        const q = query(collection(db, "orders"), where("userId", "==", uid));
+        onSnapshot(q, (snap) => {
+          if (snap.empty) {
+            container.innerHTML = '<p class="text-slate-400 py-3 text-center">You haven\'t placed any orders yet.</p>';
+            return;
+          }
+          let html = '';
+          snap.forEach(d => {
+            const o = d.data();
+            html += `
+              <div class="py-2 flex justify-between items-center">
+                <div>
+                  <span class="text-[9px] font-bold bg-pink-50 text-brand-pink px-1.5 py-0.5 rounded">${o.status || 'Pending'}</span>
+                  <p class="font-bold text-[11px] text-slate-800 mt-1">${o.items?.[0]?.title || 'Fashion Outfit'} ${o.items?.length > 1 ? `+${o.items.length - 1} more` : ''}</p>
+                  <p class="text-[10px] text-slate-400">Total: ৳ ${Number(o.totalAmount || 0).toLocaleString()}</p>
+                </div>
+                <span class="text-[10px] text-slate-500">${o.deliveryAddress ? o.deliveryAddress.substring(0, 15) + '...' : ''}</span>
+              </div>
+            `;
+          });
+          container.innerHTML = html;
+        }, (err) => {
+          console.warn("User orders listener notice:", err);
+        });
+      } catch (err) {
+        console.warn("User orders query error:", err);
+      }
+    }
+    window.loadUserOrders = loadUserOrders;
+
+    function toggleAdminPanel() {
       document.getElementById("adminModal").classList.toggle("hidden");
-      lucide.createIcons();
-    };
+      safeCreateIcons();
+    }
+    window.toggleAdminPanel = toggleAdminPanel;
 
-    window.setImageMode = (mode) => {
+    function setImageMode(mode) {
       const fileBtn = document.getElementById("modeFileBtn");
       const urlBtn = document.getElementById("modeUrlBtn");
       const fileContainer = document.getElementById("fileUploadContainer");
@@ -879,10 +1365,11 @@
         urlContainer.classList.remove("hidden");
         fileContainer.classList.add("hidden");
       }
-      lucide.createIcons();
-    };
+      safeCreateIcons();
+    }
+    window.setImageMode = setImageMode;
 
-    window.previewSelectedFile = (e) => {
+    function previewSelectedFile(e) {
       const file = e.target.files[0];
       if (!file) return;
 
@@ -916,25 +1403,28 @@
         img.src = event.target.result;
       };
       reader.readAsDataURL(file);
-    };
+    }
+    window.previewSelectedFile = previewSelectedFile;
 
-    window.previewUrlImage = (url) => {
+    function previewUrlImage(url) {
       if (url.trim().length > 5) {
         currentFinalImage = url.trim();
         document.getElementById("imagePreview").src = currentFinalImage;
         document.getElementById("imagePreviewContainer").classList.remove("hidden");
       }
-    };
+    }
+    window.previewUrlImage = previewUrlImage;
 
-    window.clearSelectedImage = () => {
+    function clearSelectedImage() {
       currentFinalImage = '';
       document.getElementById("pImageFile").value = '';
       const pImage = document.getElementById("pImage");
       if (pImage) pImage.value = '';
       document.getElementById("imagePreviewContainer").classList.add("hidden");
-    };
+    }
+    window.clearSelectedImage = clearSelectedImage;
 
-    window.switchAdminTab = (tab) => {
+    function switchAdminTab(tab) {
       document.getElementById("tabContentAdd").classList.add("hidden");
       document.getElementById("tabContentOrders").classList.add("hidden");
       document.getElementById("tabContentManage").classList.add("hidden");
@@ -944,19 +1434,20 @@
 
       if (tab === 'addProduct') {
         document.getElementById("tabContentAdd").classList.remove("hidden");
-        document.getElementById("tabBtnAdd").className = "py-3 px-3 sm:px-4 text-brand-pink border-b-2 border-brand-pink";
+        document.getElementById("tabBtnAdd").className = "py-3 px-3 sm:px-4 text-brand-pink border-b-2 border-brand-pink font-bold";
       } else if (tab === 'viewOrders') {
         document.getElementById("tabContentOrders").classList.remove("hidden");
-        document.getElementById("tabBtnOrders").className = "py-3 px-3 sm:px-4 text-brand-pink border-b-2 border-brand-pink";
+        document.getElementById("tabBtnOrders").className = "py-3 px-3 sm:px-4 text-brand-pink border-b-2 border-brand-pink font-bold";
         loadAdminOrders();
       } else if (tab === 'manageProducts') {
         document.getElementById("tabContentManage").classList.remove("hidden");
-        document.getElementById("tabBtnManage").className = "py-3 px-3 sm:px-4 text-brand-pink border-b-2 border-brand-pink";
+        document.getElementById("tabBtnManage").className = "py-3 px-3 sm:px-4 text-brand-pink border-b-2 border-brand-pink font-bold";
       }
-      lucide.createIcons();
-    };
+      safeCreateIcons();
+    }
+    window.switchAdminTab = switchAdminTab;
 
-    window.adminAddProduct = async (e) => {
+    async function adminAddProduct(e) {
       e.preventDefault();
       if (!currentFinalImage) {
         return alert("Please upload an outfit photo or provide an image link!");
@@ -972,11 +1463,15 @@
           category: document.getElementById("pCategory").value,
           price: Number(document.getElementById("pPrice").value),
           originalPrice: Number(document.getElementById("pOriginalPrice").value) || null,
+          sizes: document.getElementById("pSizes").value || "M, L, XL, XXL",
+          colors: document.getElementById("pColors").value || "Black, Navy, Olive",
           image: currentFinalImage,
           createdAt: serverTimestamp()
         };
 
-        await addDoc(collection(db, "products"), newProduct);
+        if (db) {
+          await addDoc(collection(db, "products"), newProduct);
+        }
         alert("🎉 Fashion item published successfully!");
         e.target.reset();
         clearSelectedImage();
@@ -987,76 +1482,21 @@
         btn.disabled = false;
         btn.innerText = "Publish Fashion Item";
       }
-    };
+    }
+    window.adminAddProduct = adminAddProduct;
 
-    window.seedDemoProducts = async () => {
+    async function seedDemoProducts() {
       if (!confirm("Are you sure you want to add 8 premium fashion items to your database?")) return;
       const btn = document.getElementById("seedBtn");
       btn.innerText = "Loading...";
       btn.disabled = true;
 
-      const fashionSamples = [
-        {
-          title: "Bespoke Royal Charcoal Wool Semi-Formal Blazer",
-          category: "Men Collection",
-          price: 6800,
-          originalPrice: 8500,
-          image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&q=80"
-        },
-        {
-          title: "Handcrafted Crimson Mulberry Silk Festive Saree",
-          category: "Women Collection",
-          price: 12500,
-          originalPrice: 14800,
-          image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&q=80"
-        },
-        {
-          title: "Hand-Stitched Genuine Calfskin Leather Chelsea Boots",
-          category: "Footwear",
-          price: 7200,
-          originalPrice: 8900,
-          image: "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=600&q=80"
-        },
-        {
-          title: "Tailored Egyptian Cotton White Formal Dress Shirt",
-          category: "Men Collection",
-          price: 2450,
-          originalPrice: 3100,
-          image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&q=80"
-        },
-        {
-          title: "Minimalist Italian Vegetable Tanned Leather Tote Bag",
-          category: "Bags & Leather",
-          price: 5200,
-          originalPrice: 6500,
-          image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=80"
-        },
-        {
-          title: "Swiss Automatic Chronograph Rose Gold Luxury Timepiece",
-          category: "Watches & Accessories",
-          price: 16500,
-          originalPrice: 19500,
-          image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600&q=80"
-        },
-        {
-          title: "Vintage Aviator Sunglasses with Gold Tone Rim",
-          category: "Watches & Accessories",
-          price: 2800,
-          originalPrice: 3500,
-          image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&q=80"
-        },
-        {
-          title: "Hand-Embroidered Pastel Chiffon Designer Kurti",
-          category: "Women Collection",
-          price: 3400,
-          originalPrice: 4200,
-          image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&q=80"
-        }
-      ];
-
       try {
-        for (const item of fashionSamples) {
-          await addDoc(collection(db, "products"), { ...item, createdAt: serverTimestamp() });
+        if (db) {
+          for (const item of fallbackProducts) {
+            const { id, ...data } = item;
+            await addDoc(collection(db, "products"), { ...data, createdAt: serverTimestamp() });
+          }
         }
         alert("All 8 luxury fashion items loaded into your database!");
         toggleAdminPanel();
@@ -1066,7 +1506,8 @@
         btn.innerText = "Seed 8 Outfits";
         btn.disabled = false;
       }
-    };
+    }
+    window.seedDemoProducts = seedDemoProducts;
 
     function renderAdminManageProducts() {
       const container = document.getElementById("manageProductList");
@@ -1074,29 +1515,35 @@
       container.innerHTML = products.map(p => `
         <div class="py-2.5 flex justify-between items-center gap-3">
           <div class="flex items-center gap-2.5">
-            <img src="${p.image}" class="w-10 h-12 object-cover rounded-lg border bg-slate-50" />
+            <img src="${p.image}" class="w-10 h-12 object-cover rounded-lg border bg-slate-50" onerror="this.src='https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&q=80'" />
             <div>
               <p class="font-bold text-xs text-slate-800">${p.title}</p>
+              <p class="text-[10px] text-slate-400">Sizes: ${p.sizes || 'M, L, XL'} | Colors: ${p.colors || 'All'}</p>
               <p class="text-[11px] text-brand-pink font-semibold">৳ ${p.price}</p>
             </div>
           </div>
           <button onclick="adminDeleteProduct('${p.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold px-2 py-1 bg-red-50 rounded">Delete</button>
         </div>
       `).join('');
-      lucide.createIcons();
+      safeCreateIcons();
     }
+    window.renderAdminManageProducts = renderAdminManageProducts;
 
-    window.adminDeleteProduct = async (id) => {
+    async function adminDeleteProduct(id) {
       if (!confirm("Are you sure you want to delete this fashion item?")) return;
       try {
-        await deleteDoc(doc(db, "products", id));
+        if (db) {
+          await deleteDoc(doc(db, "products", id));
+        }
       } catch (err) {
         alert("Delete failed: " + err.message);
       }
-    };
+    }
+    window.adminDeleteProduct = adminDeleteProduct;
 
     function loadAdminOrders() {
       const container = document.getElementById("ordersList");
+      if (!container || !db) return;
       onSnapshot(collection(db, "orders"), (snap) => {
         if (snap.empty) {
           container.innerHTML = `<p class="text-center py-6 text-slate-400 text-xs">No fashion orders placed yet.</p>`;
@@ -1109,9 +1556,13 @@
             <div class="border rounded-xl p-3 bg-slate-50 flex flex-col md:flex-row justify-between gap-2.5 items-start md:items-center">
               <div>
                 <span class="text-[9px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded uppercase">${o.status || 'Pending'}</span>
+                <span class="text-[9px] font-bold bg-slate-200 text-slate-700 px-2 py-0.5 rounded ml-1">${o.deliveryZone || 'Dhaka'}</span>
                 <p class="font-bold text-xs mt-1 text-slate-800">${o.customerName} (${o.customerPhone})</p>
                 <p class="text-[11px] text-slate-500">${o.deliveryAddress}</p>
-                <p class="text-[11px] font-bold text-brand-pink mt-0.5">Total: ৳ ${Number(o.totalAmount).toLocaleString()} (${o.items?.length || 0} items)</p>
+                <p class="text-[11px] font-bold text-brand-pink mt-0.5">Total: ৳ ${Number(o.totalAmount || 0).toLocaleString()} (Fee: ৳${o.deliveryCharge || 60})</p>
+                <div class="text-[10px] text-slate-400 mt-1">
+                  ${o.items?.map(i => `• ${i.title} (${i.size || 'M'}, ${i.color || 'Def'}) x${i.qty || 1}`).join('<br/>') || ''}
+                </div>
               </div>
               <div class="flex items-center gap-2">
                 <button onclick="updateOrderStatus('${d.id}', 'Delivered')" class="text-xs bg-emerald-600 text-white px-2.5 py-1 rounded-lg font-bold hover:bg-emerald-700">Mark Delivered</button>
@@ -1121,19 +1572,117 @@
           `;
         });
         container.innerHTML = html;
-        lucide.createIcons();
+        safeCreateIcons();
+      }, (err) => {
+        console.warn("Admin orders listener notice:", err);
       });
     }
+    window.loadAdminOrders = loadAdminOrders;
 
-    window.updateOrderStatus = async (orderId, newStatus) => {
+    async function updateOrderStatus(orderId, newStatus) {
       try {
-        await updateDoc(doc(db, "orders", orderId), { status: newStatus });
+        if (db) {
+          await updateDoc(doc(db, "orders", orderId), { status: newStatus });
+        }
       } catch (err) {
         alert("Status update error: " + err.message);
       }
-    };
+    }
+    window.updateOrderStatus = updateOrderStatus;
 
-    lucide.createIcons();
+    // প্রাথমিক রেন্ডার ও লোডিং স্টেট নিষ্ক্রিয়করণ
+    function hideLoading() {
+      const loader = document.getElementById("loadingIndicator");
+      if (loader) loader.classList.add("hidden");
+    }
+
+    function initApp() {
+      // ১. তাৎক্ষণিক প্রোডাক্ট ডিসপ্লে (ফলব্যাক ডেটা সহ যাতে লোডিং-এ আটকে না থাকে)
+      renderProducts(products);
+      hideLoading();
+
+      const totalBadge = document.getElementById("productTotalCount");
+      if (totalBadge) totalBadge.innerText = `${products.length} Available`;
+
+      updateCartUI();
+
+      // ২. অথেনটিকেশন লিসেনার
+      if (auth) {
+        onAuthStateChanged(auth, (user) => {
+          currentUser = user;
+          const loginBtn = document.getElementById("loginBtn");
+          const userProfile = document.getElementById("userProfile");
+          const adminBtn = document.getElementById("adminBtn");
+          const adminBtnMobile = document.getElementById("adminBtnMobile");
+
+          if (user) {
+            loginBtn?.classList.add("hidden");
+            userProfile?.classList.remove("hidden");
+            const avatar = document.getElementById("userAvatar");
+            if (avatar) avatar.src = user.photoURL || "https://ui-avatars.com/api/?name=" + encodeURIComponent(user.displayName || "User");
+            const nameEl = document.getElementById("userName");
+            if (nameEl) nameEl.innerText = user.displayName || "User";
+
+            if (user.email === ADMIN_EMAIL) {
+              adminBtn?.classList.remove("hidden");
+              adminBtnMobile?.classList.remove("hidden");
+            } else {
+              adminBtn?.classList.add("hidden");
+              adminBtnMobile?.classList.add("hidden");
+            }
+            loadUserOrders(user.uid);
+          } else {
+            loginBtn?.classList.remove("hidden");
+            userProfile?.classList.add("hidden");
+            adminBtn?.classList.add("hidden");
+            adminBtnMobile?.classList.add("hidden");
+          }
+          safeCreateIcons();
+        });
+      }
+
+      // ৩. ফায়ারস্টোর রিয়েলটাইম সিঙ্ক (অটো-ফলব্যাক ও এরর ক্যাচিং সহ)
+      if (db) {
+        try {
+          const productsCol = collection(db, "products");
+          onSnapshot(productsCol, (snapshot) => {
+            hideLoading();
+            if (!snapshot.empty) {
+              products = [];
+              snapshot.forEach((docSnap) => {
+                products.push({ id: docSnap.id, ...docSnap.data() });
+              });
+            } else {
+              products = [...fallbackProducts];
+            }
+            const totalCountEl = document.getElementById("productTotalCount");
+            if (totalCountEl) totalCountEl.innerText = `${products.length} Available`;
+            applyFilters();
+            renderAdminManageProducts();
+          }, (error) => {
+            console.warn("Firestore products error, keeping default catalog:", error);
+            hideLoading();
+            products = [...fallbackProducts];
+            applyFilters();
+          });
+        } catch (e) {
+          hideLoading();
+          products = [...fallbackProducts];
+          applyFilters();
+        }
+      }
+
+      // ৪. অলওয়েজ সেফটি টাইমআউট: যেকোনো পরিস্থিতিতে লোডার বন্ধ নিশ্চিতকরণ
+      setTimeout(hideLoading, 500);
+      safeCreateIcons();
+    }
+
+    // অ্যাপ স্টার্ট
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
   </script>
 </body>
 </html>
