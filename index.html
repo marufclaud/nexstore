@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexStore: Online Shopping in Bangladesh</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              pink: '#e6005c',
+              cyan: '#00a3e0',
+              dark: '#111827'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#f8f9fa] text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- ১. টপ ইউটিলিটি বার -->
+  <div class="bg-white border-b border-gray-100 text-[13px] text-gray-600 hidden md:block">
+    <div class="max-w-7xl mx-auto px-4 py-1.5 flex justify-between items-center">
+      <div class="text-xs text-gray-400">NexStore Official Turnkey Shop</div>
+      <div class="flex items-center gap-6">
+        <a href="#" class="hover:text-brand-pink transition">Save More on App</a>
+        <a href="#" class="hover:text-brand-pink transition">Help & Support</a>
+        
+        <!-- ইউজার স্টেট / লগইন -->
+        <div id="authContainer" class="flex items-center gap-2 border-l pl-4">
+          <button id="loginBtn" onclick="loginWithGoogle()" class="text-brand-pink font-semibold hover:underline flex items-center gap-1">
+            <i data-lucide="log-in" class="w-4 h-4"></i> Sign in with Google
+          </button>
+          <div id="userProfile" class="hidden flex items-center gap-2">
+            <img id="userAvatar" src="" class="w-6 h-6 rounded-full border border-gray-200" />
+            <span id="userName" class="font-medium text-gray-800 text-xs"></span>
+            <button onclick="logout()" class="text-gray-400 hover:text-red-500 text-xs ml-2">Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ২. মেইন হেডার -->
+  <header class="bg-white shadow-sm sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between gap-4">
+      <!-- ব্র্যান্ড লোগো -->
+      <a href="#" class="flex items-center gap-1.5 text-2xl md:text-3xl font-extrabold tracking-tight">
+        <span class="p-1 rounded-lg border-2 border-brand-pink text-brand-pink">
+          <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+        </span>
+        <span class="text-brand-dark">Nex<span class="text-brand-pink">Store</span></span>
+      </a>
+
+      <!-- সার্চ বার -->
+      <div class="flex-1 max-w-xl relative">
+        <div class="flex border-2 border-gray-200 rounded-lg overflow-hidden focus-within:border-brand-pink transition">
+          <div class="pl-3 flex items-center pointer-events-none text-gray-400">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </div>
+          <input id="searchInput" onkeyup="filterProducts()" type="text" placeholder="Search in NexStore..." 
+                 class="w-full px-3 py-2 text-sm text-gray-700 focus:outline-none" />
+        </div>
+      </div>
+
+      <!-- অ্যাকশন বাটনস -->
+      <div class="flex items-center gap-3">
+        <!-- শুধুমাত্র অ্যাডমিনের জন্য দৃশ্যমান বাটন -->
+        <button id="adminBtn" onclick="toggleAdminPanel()" class="hidden bg-gray-900 hover:bg-black text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow transition">
+          <i data-lucide="shield" class="w-4 h-4 text-amber-400"></i> Admin Panel
+        </button>
+
+        <!-- কার্ট বাটন -->
+        <button onclick="toggleCart()" class="relative p-2 text-gray-700 hover:text-brand-pink transition">
+          <i data-lucide="shopping-cart" class="w-7 h-7 text-brand-pink"></i>
+          <span id="cartCount" class="absolute -top-1 -right-1 bg-brand-pink text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ৩. হিরো ব্যানার সেকশন -->
+  <section class="max-w-7xl mx-auto px-4 mt-4">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div class="lg:col-span-8 bg-gradient-to-r from-slate-950 via-gray-900 to-sky-950 text-white rounded-xl p-6 md:p-8 flex flex-col justify-between shadow-sm relative overflow-hidden min-h-[260px]">
+        <div class="relative z-10 max-w-md">
+          <span class="inline-block bg-brand-pink text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2">Original & Trusted</span>
+          <h1 class="text-3xl md:text-4xl font-black leading-tight">Shop Premium <br/><span class="text-sky-400">Pay Smart</span></h1>
+          <p class="text-gray-300 mt-2 text-sm">Authentic Products with Fast Nationwide Delivery.</p>
+        </div>
+        <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=500&q=80" alt="Electronics" 
+             class="hidden sm:block absolute right-4 bottom-2 w-64 h-52 object-contain drop-shadow-2xl rounded-lg" />
+      </div>
+
+      <div class="lg:col-span-4 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl p-5 text-white flex flex-col justify-between shadow-sm">
+        <div>
+          <span class="bg-white/20 text-white text-xs font-bold px-2.5 py-1 rounded-full uppercase">Customer Support</span>
+          <h3 class="text-2xl font-black mt-2 leading-snug">Authentic & Verified <br/>Direct from Seller</h3>
+          <p class="text-xs text-pink-100 mt-1">Cash on Delivery Available Inside and Outside Dhaka.</p>
+        </div>
+        <div class="bg-white text-gray-800 p-3 rounded-lg mt-3 flex items-center justify-between text-xs font-semibold">
+          <span>Delivery Hotline:</span>
+          <span class="text-brand-pink font-bold">+880 1700-000000</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ৪. ট্রাস্ট ফিচার বার -->
+  <section class="max-w-7xl mx-auto px-4 mt-5">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+      <div class="flex items-center gap-3 p-1">
+        <div class="w-9 h-9 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <i data-lucide="tag" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold text-gray-900">Competitive Price</h4>
+          <p class="text-[11px] text-gray-500">Best Deals Online</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-1">
+        <div class="w-9 h-9 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <i data-lucide="shield-check" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold text-gray-900">Authentic Products</h4>
+          <p class="text-[11px] text-gray-500">100% Brand Warranty</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-1">
+        <div class="w-9 h-9 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <i data-lucide="credit-card" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold text-gray-900">Easy Payment</h4>
+          <p class="text-[11px] text-gray-500">COD / bKash / Cards</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-1">
+        <div class="w-9 h-9 rounded-lg bg-pink-50 text-brand-pink flex items-center justify-center shrink-0">
+          <i data-lucide="truck" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold text-gray-900">Fast Delivery</h4>
+          <p class="text-[11px] text-gray-500">Rapid Doorstep Delivery</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ৫. লাইভ প্রোডাক্ট গ্রিড -->
+  <main class="max-w-7xl mx-auto px-4 py-8 flex-1">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+        <span class="w-2.5 h-6 bg-brand-pink rounded-sm inline-block"></span>
+        Available Products
+      </h2>
+      <span id="productTotalCount" class="text-xs text-gray-400 font-medium">Loading from Database...</span>
+    </div>
+
+    <!-- লোডিং স্টেট -->
+    <div id="loadingIndicator" class="text-center py-16">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-brand-pink border-t-transparent"></div>
+      <p class="text-sm text-gray-500 mt-2">Connecting to Firestore Database...</p>
+    </div>
+
+    <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <!-- ডেটাবেস থেকে রিয়েল প্রোডাক্ট কার্ড রেন্ডার হবে -->
+    </div>
+  </main>
+
+  <!-- ৬. কার্ট ড্রয়ার -->
+  <div id="cartDrawer" class="fixed inset-0 bg-black/50 z-50 hidden flex justify-end">
+    <div class="bg-white w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl">
+      <div>
+        <div class="flex justify-between items-center border-b pb-4">
+          <h3 class="text-lg font-bold text-gray-900">My Shopping Cart</h3>
+          <button onclick="toggleCart()" class="text-gray-400 hover:text-red-500">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+        <div id="cartItems" class="divide-y overflow-y-auto max-h-[60vh] mt-4"></div>
+      </div>
+      <div class="border-t pt-4">
+        <div class="flex justify-between text-base font-bold mb-4 text-gray-900">
+          <span>Subtotal:</span>
+          <span id="cartTotal">৳ 0</span>
+        </div>
+        <button onclick="openCheckoutModal()" class="w-full bg-brand-pink hover:bg-pink-700 text-white font-bold py-3 rounded-lg transition shadow-md">
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ৭. চেকআউট মডাল -->
+  <div id="checkoutModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-lg font-bold text-gray-900">Delivery Information</h3>
+        <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-red-500">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="submitOrder(event)" class="space-y-4 mt-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">Your Full Name</label>
+          <input id="orderName" type="text" required class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-pink" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">Phone Number (Mobile)</label>
+          <input id="orderPhone" type="tel" required placeholder="017XXXXXXXX" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-pink" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">Full Delivery Address</label>
+          <textarea id="orderAddress" rows="2" required placeholder="House, Road, City/Thana" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-pink"></textarea>
+        </div>
+        <div class="bg-gray-50 p-3 rounded-lg text-xs text-gray-600">
+          <p class="font-bold text-gray-800">Payment Method: Cash on Delivery (COD)</p>
+          <p>Pay when you receive the authentic parcel at your doorstep.</p>
+        </div>
+        <button type="submit" id="orderSubmitBtn" class="w-full bg-brand-pink text-white font-bold py-2.5 rounded-lg hover:bg-pink-700 transition">
+          Confirm Order
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ৮. সিকিউর অ্যাডমিন ড্যাশবোর্ড মডাল -->
+  <div id="adminModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+      <!-- হেডার -->
+      <div class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shield" class="w-5 h-5 text-amber-400"></i>
+          <h3 class="font-bold text-base">NexStore Owner Panel (Admin)</h3>
+        </div>
+        <button onclick="toggleAdminPanel()" class="text-gray-400 hover:text-white">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <!-- অ্যাডমিন ট্যাব -->
+      <div class="border-b bg-gray-50 flex px-6 text-sm font-semibold">
+        <button onclick="switchAdminTab('addProduct')" id="tabBtnAdd" class="py-3 px-4 text-brand-pink border-b-2 border-brand-pink">Add Product</button>
+        <button onclick="switchAdminTab('viewOrders')" id="tabBtnOrders" class="py-3 px-4 text-gray-500 hover:text-gray-900">Customer Orders</button>
+        <button onclick="switchAdminTab('manageProducts')" id="tabBtnManage" class="py-3 px-4 text-gray-500 hover:text-gray-900">Manage Inventory</button>
+      </div>
+
+      <!-- ট্যাব কনটেন্ট -->
+      <div class="p-6 overflow-y-auto flex-1">
+        <!-- ১. নতুন প্রোডাক্ট যোগ ফর্ম -->
+        <div id="tabContentAdd">
+          <form onsubmit="adminAddProduct(event)" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Product Title</label>
+                <input id="pTitle" type="text" required placeholder="Sony BRAVIA 2 4K Ultra HD..." class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-pink" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Category</label>
+                <select id="pCategory" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-pink">
+                  <option value="Electronics">Electronics</option>
+                  <option value="Audio">Audio</option>
+                  <option value="Smartwatches">Smartwatches</option>
+                  <option value="Fashion">Fashion</option>
+                  <option value="Bags & Luggage">Bags & Luggage</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Price (BDT ৳)</label>
+                <input id="pPrice" type="number" required placeholder="54900" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-pink" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Original Price (৳ for discount)</label>
+                <input id="pOriginalPrice" type="number" placeholder="62000" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-pink" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Image URL (Direct Photo Link)</label>
+              <input id="pImage" type="url" required placeholder="https://images.unsplash.com/photo-..." class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-pink" />
+            </div>
+            <button type="submit" id="addProductBtn" class="bg-brand-pink hover:bg-pink-700 text-white font-bold px-6 py-2.5 rounded-lg text-sm transition">
+              Upload to Store
+            </button>
+          </form>
+        </div>
+
+        <!-- ২. কাস্টমার অর্ডার তালিকা -->
+        <div id="tabContentOrders" class="hidden">
+          <div id="ordersList" class="space-y-3">
+            <p class="text-xs text-gray-400">Loading live orders...</p>
+          </div>
+        </div>
+
+        <!-- ৩. প্রোডাক্ট ইনভেন্টরি ম্যানেজ -->
+        <div id="tabContentManage" class="hidden">
+          <div id="manageProductList" class="divide-y text-sm"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-white border-t py-6 text-center text-xs text-gray-400 mt-12">
+    © 2026 NexStore Ltd. All Rights Reserved. Turnkey Solution.
+  </footer>
+
+  <!-- ফায়ারবেস স্ক্রিপ্ট (Modular SDK) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // আপনার আসল ফায়ারবেস কনফিগারেশন
+    const firebaseConfig = {
+      apiKey: "AIzaSyCegw-R2U9toPFdr3YD1MoWRU3qbHmcMs4",
+      authDomain: "nexstore-shop.firebaseapp.com",
+      projectId: "nexstore-shop",
+      storageBucket: "nexstore-shop.firebasestorage.app",
+      messagingSenderId: "783211655520",
+      appId: "1:783211655520:web:3d869160b49234e883ee05",
+      measurementId: "G-HWZWMV0VS9"
+    };
+
+    // ফায়ারবেস চালু
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    // দোকান মালিকের অ্যাডমিন ইমেইল
+    const ADMIN_EMAIL = "marufclaud@gmail.com";
+
+    let currentUser = null;
+    let products = [];
+    let cart = [];
+
+    // ১. অথেনটিকেশন চেকিং
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      const authContainer = document.getElementById("authContainer");
+      const loginBtn = document.getElementById("loginBtn");
+      const userProfile = document.getElementById("userProfile");
+      const adminBtn = document.getElementById("adminBtn");
+
+      if (user) {
+        loginBtn.classList.add("hidden");
+        userProfile.classList.remove("hidden");
+        document.getElementById("userAvatar").src = user.photoURL || "https://ui-avatars.com/api/?name=" + user.displayName;
+        document.getElementById("userName").innerText = user.displayName;
+
+        // চেক: ইনি কি অ্যাডমিন?
+        if (user.email === ADMIN_EMAIL) {
+          adminBtn.classList.remove("hidden");
+        } else {
+          adminBtn.classList.add("hidden");
+        }
+      } else {
+        loginBtn.classList.remove("hidden");
+        userProfile.classList.add("hidden");
+        adminBtn.classList.add("hidden");
+      }
+      lucide.createIcons();
+    });
+
+    window.loginWithGoogle = async () => {
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        console.error("Login failed:", err);
+        alert("Google Login Failed: " + err.message);
+      }
+    };
+
+    window.logout = async () => {
+      await signOut(auth);
+    };
+
+    // ২. ফায়ারস্টোর থেকে রিয়েলটাইম প্রোডাক্ট লোড
+    const productsCol = collection(db, "products");
+    onSnapshot(productsCol, (snapshot) => {
+      document.getElementById("loadingIndicator").classList.add("hidden");
+      products = [];
+      snapshot.forEach((docSnap) => {
+        products.push({ id: docSnap.id, ...docSnap.data() });
+      });
+      document.getElementById("productTotalCount").innerText = `${products.length} Products Live`;
+      renderProducts(products);
+      renderAdminManageProducts();
+    });
+
+    window.renderProducts = (items) => {
+      const grid = document.getElementById("productGrid");
+      if (items.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400">No products found in store. Admin can add products from Admin Panel.</div>`;
+        return;
+      }
+      grid.innerHTML = items.map(p => `
+        <div class="bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-lg transition duration-200 flex flex-col justify-between group">
+          <div class="relative bg-gray-50 p-4 flex items-center justify-center h-48 overflow-hidden">
+            ${p.originalPrice && p.originalPrice > p.price ? `
+              <span class="absolute top-2 left-2 bg-rose-100 text-brand-pink text-[10px] font-bold px-2 py-0.5 rounded">
+                ${Math.round((1 - p.price / p.originalPrice) * 100)}% OFF
+              </span>
+            ` : ''}
+            <img src="${p.image}" alt="${p.title}" class="h-full w-full object-contain group-hover:scale-105 transition duration-300">
+          </div>
+          <div class="p-3.5 flex flex-col flex-1 justify-between">
+            <div>
+              <p class="text-[10px] uppercase tracking-wide text-gray-400 font-bold">${p.category}</p>
+              <h4 class="font-semibold text-xs text-gray-800 line-clamp-2 mt-1 leading-snug hover:text-brand-pink transition" title="${p.title}">
+                ${p.title}
+              </h4>
+              <div class="mt-2 flex items-baseline gap-2">
+                <span class="text-sm font-black text-brand-pink">৳ ${Number(p.price).toLocaleString()}</span>
+                ${p.originalPrice ? `<span class="text-[11px] text-gray-400 line-through">৳ ${Number(p.originalPrice).toLocaleString()}</span>` : ''}
+              </div>
+            </div>
+            <button onclick="addToCart('${p.id}')" class="mt-3 w-full bg-pink-50 text-brand-pink hover:bg-brand-pink hover:text-white text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    };
+
+    window.filterProducts = () => {
+      const q = document.getElementById("searchInput").value.toLowerCase();
+      const filtered = products.filter(p => p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+      renderProducts(filtered);
+    };
+
+    // ৩. কার্ট হ্যান্ডলিং
+    window.addToCart = (id) => {
+      const item = products.find(p => p.id === id);
+      if (item) {
+        cart.push(item);
+        updateCartUI();
+        toggleCart(true);
+      }
+    };
+
+    window.updateCartUI = () => {
+      document.getElementById("cartCount").innerText = cart.length;
+      const cartItems = document.getElementById("cartItems");
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p class="text-center text-gray-400 py-10 text-sm">Your cart is empty</p>';
+      } else {
+        cartItems.innerHTML = cart.map((item, index) => `
+          <div class="py-3 flex justify-between items-center gap-3">
+            <img src="${item.image}" class="w-12 h-12 object-contain bg-gray-50 rounded border p-1" />
+            <div class="flex-1">
+              <p class="font-semibold text-xs text-gray-800 line-clamp-1">${item.title}</p>
+              <p class="text-xs font-bold text-brand-pink mt-0.5">৳ ${Number(item.price).toLocaleString()}</p>
+            </div>
+            <button onclick="removeFromCart(${index})" class="text-gray-400 hover:text-red-500">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `).join('');
+      }
+      const total = cart.reduce((sum, i) => sum + Number(i.price), 0);
+      document.getElementById("cartTotal").innerText = `৳ ${total.toLocaleString()}`;
+      lucide.createIcons();
+    };
+
+    window.removeFromCart = (index) => {
+      cart.splice(index, 1);
+      updateCartUI();
+    };
+
+    window.toggleCart = (forceOpen = false) => {
+      const drawer = document.getElementById("cartDrawer");
+      if (forceOpen) drawer.classList.remove("hidden");
+      else drawer.classList.toggle("hidden");
+      lucide.createIcons();
+    };
+
+    // ৪. চেকআউট ও অর্ডার সাবমিট (Firestore Orders Collection)
+    window.openCheckoutModal = () => {
+      if (cart.length === 0) return alert("Please add at least one item to cart!");
+      if (!currentUser) {
+        alert("Please Sign in with Google before placing an order.");
+        loginWithGoogle();
+        return;
+      }
+      document.getElementById("orderName").value = currentUser.displayName || "";
+      toggleCart();
+      document.getElementById("checkoutModal").classList.remove("hidden");
+      lucide.createIcons();
+    };
+
+    window.closeCheckoutModal = () => {
+      document.getElementById("checkoutModal").classList.add("hidden");
+    };
+
+    window.submitOrder = async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("orderSubmitBtn");
+      btn.disabled = true;
+      btn.innerText = "Placing Order...";
+
+      try {
+        const orderData = {
+          userId: currentUser.uid,
+          customerEmail: currentUser.email,
+          customerName: document.getElementById("orderName").value,
+          customerPhone: document.getElementById("orderPhone").value,
+          deliveryAddress: document.getElementById("orderAddress").value,
+          items: cart.map(i => ({ id: i.id, title: i.title, price: i.price, image: i.image })),
+          totalAmount: cart.reduce((s, i) => s + Number(i.price), 0),
+          status: "Pending",
+          createdAt: serverTimestamp()
+        };
+
+        await addDoc(collection(db, "orders"), orderData);
+        alert("Order Placed Successfully! The store owner will contact you soon.");
+        cart = [];
+        updateCartUI();
+        closeCheckoutModal();
+      } catch (err) {
+        console.error("Order error:", err);
+        alert("Failed to place order: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Confirm Order";
+      }
+    };
+
+    // ৫. অ্যাডমিন প্যানেল লজিক (শুধু marufclaud@gmail.com)
+    window.toggleAdminPanel = () => {
+      document.getElementById("adminModal").classList.toggle("hidden");
+      lucide.createIcons();
+    };
+
+    window.switchAdminTab = (tab) => {
+      document.getElementById("tabContentAdd").classList.add("hidden");
+      document.getElementById("tabContentOrders").classList.add("hidden");
+      document.getElementById("tabContentManage").classList.add("hidden");
+      document.getElementById("tabBtnAdd").className = "py-3 px-4 text-gray-500 hover:text-gray-900";
+      document.getElementById("tabBtnOrders").className = "py-3 px-4 text-gray-500 hover:text-gray-900";
+      document.getElementById("tabBtnManage").className = "py-3 px-4 text-gray-500 hover:text-gray-900";
+
+      if (tab === 'addProduct') {
+        document.getElementById("tabContentAdd").classList.remove("hidden");
+        document.getElementById("tabBtnAdd").className = "py-3 px-4 text-brand-pink border-b-2 border-brand-pink";
+      } else if (tab === 'viewOrders') {
+        document.getElementById("tabContentOrders").classList.remove("hidden");
+        document.getElementById("tabBtnOrders").className = "py-3 px-4 text-brand-pink border-b-2 border-brand-pink";
+        loadAdminOrders();
+      } else if (tab === 'manageProducts') {
+        document.getElementById("tabContentManage").classList.remove("hidden");
+        document.getElementById("tabBtnManage").className = "py-3 px-4 text-brand-pink border-b-2 border-brand-pink";
+      }
+      lucide.createIcons();
+    };
+
+    window.adminAddProduct = async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("addProductBtn");
+      btn.disabled = true;
+      btn.innerText = "Adding Product...";
+
+      try {
+        const newProduct = {
+          title: document.getElementById("pTitle").value,
+          category: document.getElementById("pCategory").value,
+          price: Number(document.getElementById("pPrice").value),
+          originalPrice: Number(document.getElementById("pOriginalPrice").value) || null,
+          image: document.getElementById("pImage").value,
+          createdAt: serverTimestamp()
+        };
+
+        await addDoc(collection(db, "products"), newProduct);
+        alert("Product added to live store successfully!");
+        e.target.reset();
+        toggleAdminPanel();
+      } catch (err) {
+        console.error("Add product error:", err);
+        alert("Permission denied or error: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Upload to Store";
+      }
+    };
+
+    function renderAdminManageProducts() {
+      const container = document.getElementById("manageProductList");
+      if (!container) return;
+      container.innerHTML = products.map(p => `
+        <div class="py-3 flex justify-between items-center gap-4">
+          <div class="flex items-center gap-3">
+            <img src="${p.image}" class="w-10 h-10 object-contain rounded border p-1" />
+            <div>
+              <p class="font-bold text-xs text-gray-800">${p.title}</p>
+              <p class="text-[11px] text-brand-pink font-semibold">৳ ${p.price}</p>
+            </div>
+          </div>
+          <button onclick="adminDeleteProduct('${p.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold px-3 py-1 bg-red-50 rounded">Delete</button>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    window.adminDeleteProduct = async (id) => {
+      if (!confirm("Are you sure you want to delete this product?")) return;
+      try {
+        await deleteDoc(doc(db, "products", id));
+      } catch (err) {
+        alert("Delete failed: " + err.message);
+      }
+    };
+
+    function loadAdminOrders() {
+      const container = document.getElementById("ordersList");
+      onSnapshot(collection(db, "orders"), (snap) => {
+        if (snap.empty) {
+          container.innerHTML = `<p class="text-center py-6 text-gray-400 text-xs">No customer orders yet.</p>`;
+          return;
+        }
+        let html = '';
+        snap.forEach(d => {
+          const o = d.data();
+          html += `
+            <div class="border rounded-lg p-3 bg-gray-50 flex flex-col md:flex-row justify-between gap-3 items-start md:items-center">
+              <div>
+                <span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded uppercase">${o.status || 'Pending'}</span>
+                <p class="font-bold text-xs mt-1 text-gray-800">${o.customerName} (${o.customerPhone})</p>
+                <p class="text-[11px] text-gray-500">Address: ${o.deliveryAddress}</p>
+                <p class="text-[11px] font-semibold text-brand-pink mt-1">Total: ৳ ${Number(o.totalAmount).toLocaleString()} (${o.items?.length || 0} items)</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="updateOrderStatus('${d.id}', 'Delivered')" class="text-xs bg-emerald-600 text-white px-2.5 py-1 rounded font-semibold hover:bg-emerald-700">Mark Delivered</button>
+                <button onclick="updateOrderStatus('${d.id}', 'Cancelled')" class="text-xs bg-gray-300 text-gray-700 px-2.5 py-1 rounded font-semibold hover:bg-gray-400">Cancel</button>
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+        lucide.createIcons();
+      });
+    }
+
+    window.updateOrderStatus = async (orderId, newStatus) => {
+      try {
+        await updateDoc(doc(db, "orders", orderId), { status: newStatus });
+      } catch (err) {
+        alert("Status update error: " + err.message);
+      }
+    };
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
